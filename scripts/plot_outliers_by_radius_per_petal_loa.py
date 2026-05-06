@@ -42,7 +42,8 @@ for program in PROGRAMS:
         n_total, _ = np.histogram(sp["RADIUS"], bins=bins)
         n_out,   _ = np.histogram(sp.loc[sp["is_outlier"], "RADIUS"], bins=bins)
         fraction   = np.where(n_total > 0, n_out / n_total, np.nan)
-        ax.scatter(bin_centers, fraction, s=10)
+        err        = np.where(n_total > 0, np.sqrt(n_out) / n_total, np.nan)
+        ax.errorbar(bin_centers, fraction, yerr=err, fmt="o", ms=4, capsize=2, lw=0.8)
         ax.set_title(f"Petal {petal}")
         ax.grid(axis="y", linewidth=0.5)
 
