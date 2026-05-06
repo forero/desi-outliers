@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import fitsio
 import matplotlib.pyplot as plt
+from scipy import stats
 
 ZCAT     = "/global/cfs/cdirs/desi/spectro/redux/loa/zcatalog/v1/zall-tilecumulative-loa.fits"
 OUTLIERS = "/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv"
@@ -77,12 +78,29 @@ for name, cfg in TARGETS.items():
     ax.set_xticks(xticks)
     ax.grid(axis="x", linewidth=0.8)
 
+    # correlation on valid (non-NaN) pairs
+    valid = np.isfinite(log_qa_frac) & np.isfinite(frac_out)
+    x_v, y_v = log_qa_frac[valid], frac_out[valid]
+    pearson_r, pearson_p   = stats.pearsonr(x_v, y_v)
+    spearman_r, spearman_p = stats.spearmanr(x_v, y_v)
+
+    # linear regression for trend line
+    slope, intercept, *_ = stats.linregress(x_v, y_v)
+    x_line = np.linspace(x_v.min(), x_v.max(), 200)
+
     ax = axes[2]
     ax.errorbar(log_qa_frac, frac_out, yerr=err_out,
                 fmt="o", ms=3, lw=0.5, capsize=0, alpha=0.5, color="C2")
+    ax.plot(x_line, slope * x_line + intercept, color="k", lw=1.5, label="linear fit")
+    label = (f"Pearson r={pearson_r:.2f} (p={pearson_p:.2e})\n"
+             f"Spearman ρ={spearman_r:.2f} (p={spearman_p:.2e})")
+    ax.text(0.03, 0.95, label, transform=ax.transAxes, va="top",
+            fontsize=9, family="monospace",
+            bbox=dict(boxstyle="round", facecolor="white", alpha=0.7))
     ax.set_xlabel("log10(QA failure rate)")
     ax.set_ylabel("Outlier fraction")
     ax.set_title(f"{name} — outlier fraction vs QA failure rate (per fiber)")
+    ax.legend()
 
     fig.suptitle(f"Loa {name} — outlier fraction vs QA failure rate per fiber")
     fig.tight_layout()
