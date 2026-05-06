@@ -50,7 +50,7 @@ for i, (name, counts) in enumerate(all_counts.items()):
     offset = (i - 0.5) * width
     ax.bar([xi + offset for xi in x], vals, width, label=name)
 
-ax.set_yscale("log")
+ax.set_yscale("linear")
 ax.set_xticks(list(x))
 ax.set_xticklabels(programs, rotation=45)
 ax.set_xlabel("Program")
