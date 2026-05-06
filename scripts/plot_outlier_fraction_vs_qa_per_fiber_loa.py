@@ -58,7 +58,7 @@ for name, cfg in TARGETS.items():
     qa_frac[mask] = np.nan
     qa_err[mask]  = np.nan
 
-    fig, axes = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
+    fig, axes = plt.subplots(3, 1, figsize=(12, 11))
 
     ax = axes[0]
     ax.errorbar(fibers, frac_out, yerr=err_out, fmt="o", ms=2, lw=0.5, capsize=0, alpha=0.6)
@@ -74,6 +74,13 @@ for name, cfg in TARGETS.items():
     ax.set_xlabel("Fiber ID")
     ax.set_xticks(xticks)
     ax.grid(axis="x", linewidth=0.8)
+
+    ax = axes[2]
+    ax.errorbar(qa_frac, frac_out, xerr=qa_err, yerr=err_out,
+                fmt="o", ms=3, lw=0.5, capsize=0, alpha=0.5, color="C2")
+    ax.set_xlabel("QA failure rate")
+    ax.set_ylabel("Outlier fraction")
+    ax.set_title(f"{name} — outlier fraction vs QA failure rate (per fiber)")
 
     fig.suptitle(f"Loa {name} — outlier fraction vs QA failure rate per fiber")
     fig.tight_layout()
