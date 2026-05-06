@@ -19,17 +19,17 @@ for name, paths in PRODUCTIONS.items():
     tiles = pd.read_csv(paths["tiles"], usecols=["TILEID", "PROGRAM"])
     merged = outliers.merge(tiles, on="TILEID", how="left")
 
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, axes = plt.subplots(3, 1, figsize=(10, 10), sharex=True)
 
-    for program in PROGRAMS:
+    for ax, program in zip(axes, PROGRAMS):
         subset = merged[merged["PROGRAM"] == program]
         counts = subset.groupby("FIBER").size()
-        ax.plot(counts.index, counts.values, label=program, alpha=0.8)
+        ax.scatter(counts.index, counts.values, s=2, alpha=0.6)
+        ax.set_ylabel("Number of outliers")
+        ax.set_title(program)
 
-    ax.set_xlabel("Fiber ID")
-    ax.set_ylabel("Number of outliers")
-    ax.set_title(f"{name} — outliers per fiber ID")
-    ax.legend()
+    axes[-1].set_xlabel("Fiber ID")
+    fig.suptitle(f"{name} — outliers per fiber ID")
     fig.tight_layout()
 
     outpath = f"plots/outliers_by_fiber_{name.lower()}.png"
