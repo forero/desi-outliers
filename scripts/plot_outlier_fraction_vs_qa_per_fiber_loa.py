@@ -52,8 +52,11 @@ for name, cfg in TARGETS.items():
     frac_out  = np.where(n_total > 0, n_outlier / n_total, np.nan)
     err_out   = np.where(n_total > 0, np.sqrt(n_outlier) / n_total, np.nan)
 
-    qa_frac = qa[cfg["qa_frac"]].values
-    qa_err  = np.clip(qa[cfg["qa_err"]].values, 0, None)
+    qa_frac = qa[cfg["qa_frac"]].values.copy()
+    qa_err  = qa[cfg["qa_err"]].values.copy()
+    mask = qa_frac < 0
+    qa_frac[mask] = np.nan
+    qa_err[mask]  = np.nan
 
     fig, axes = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
 
