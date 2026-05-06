@@ -67,18 +67,20 @@ for name, cfg in TARGETS.items():
     ax.set_xticks(xticks)
     ax.grid(axis="x", linewidth=0.8)
 
+    log_qa_frac = np.log10(np.where(qa_frac > 0, qa_frac, np.nan))
+
     ax = axes[1]
-    ax.errorbar(fibers, qa_frac, yerr=qa_err, fmt="o", ms=2, lw=0.5, capsize=0, alpha=0.6, color="C1")
-    ax.set_ylabel("QA failure rate")
+    ax.scatter(fibers, log_qa_frac, s=4, alpha=0.6, color="C1")
+    ax.set_ylabel("log10(QA failure rate)")
     ax.set_title(f"{name} — QA failure rate per fiber")
     ax.set_xlabel("Fiber ID")
     ax.set_xticks(xticks)
     ax.grid(axis="x", linewidth=0.8)
 
     ax = axes[2]
-    ax.errorbar(qa_frac, frac_out, xerr=qa_err, yerr=err_out,
+    ax.errorbar(log_qa_frac, frac_out, yerr=err_out,
                 fmt="o", ms=3, lw=0.5, capsize=0, alpha=0.5, color="C2")
-    ax.set_xlabel("QA failure rate")
+    ax.set_xlabel("log10(QA failure rate)")
     ax.set_ylabel("Outlier fraction")
     ax.set_title(f"{name} — outlier fraction vs QA failure rate (per fiber)")
 
