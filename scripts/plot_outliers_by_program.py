@@ -12,9 +12,7 @@ PRODUCTIONS = {
     },
 }
 
-fig, axes = plt.subplots(1, 2, figsize=(10, 5))
-
-for ax, (name, paths) in zip(axes, PRODUCTIONS.items()):
+for name, paths in PRODUCTIONS.items():
     outliers = pd.read_csv(paths["outliers"], usecols=["TILEID"])
     tiles = pd.read_csv(paths["tiles"], usecols=["TILEID", "PROGRAM"])
 
@@ -25,13 +23,15 @@ for ax, (name, paths) in zip(axes, PRODUCTIONS.items()):
         .sort_index()
     )
 
+    fig, ax = plt.subplots(figsize=(6, 5))
     ax.bar(counts.index, counts.values)
-    ax.set_title(name)
+    ax.set_title(f"{name} — outliers by program")
     ax.set_xlabel("Program")
     ax.set_ylabel("Number of outliers")
     ax.tick_params(axis="x", rotation=45)
+    fig.tight_layout()
 
-fig.suptitle("DESI outliers by program")
-fig.tight_layout()
-fig.savefig("plots/outliers_by_program.png", dpi=150)
-print("Saved plots/outliers_by_program.png")
+    outpath = f"plots/outliers_by_program_{name.lower()}.png"
+    fig.savefig(outpath, dpi=150)
+    plt.close(fig)
+    print(f"Saved {outpath}")
