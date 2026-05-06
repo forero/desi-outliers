@@ -59,10 +59,12 @@ fig, axes = plt.subplots(3, 1, figsize=(8, 10), sharex=False)
 for ax, program in zip(axes, PROGRAMS):
     for name in PRODUCTIONS:
         counts = all_counts[(name, program)]
-        ax.hist(counts, bins=50, alpha=0.6, label=name)
+        median = counts.median()
+        label = f"{name} (median={median:.0f})"
+        ax.hist(counts, bins=50, alpha=0.6, density=True, label=label)
     ax.set_title(program)
     ax.set_xlabel("Outliers per tile")
-    ax.set_ylabel("Number of tiles")
+    ax.set_ylabel("Probability density")
     ax.legend()
 
 fig.suptitle("Outliers per tile — both productions")
