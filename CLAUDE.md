@@ -36,7 +36,16 @@ Files inside are split by petal (0–9):
 
 The petal for a given fiber is `petal = fiber // 500`.
 
+## Repo structure
+
+```
+desi-outliers/
+├── notebooks/   # exploratory Jupyter notebooks
+├── scripts/     # production Python scripts
+└── plots/       # output figures
+```
+
 ## Notebooks
 
-- `desi-tiles-dr2.ipynb` — tile-level exploration
-- `check_targetid.ipynb` — per-target spectrum lookup
+- `notebooks/desi-tiles-dr2.ipynb` — tile-level exploration
+- `notebooks/check_targetid.ipynb` — per-target spectrum lookup
