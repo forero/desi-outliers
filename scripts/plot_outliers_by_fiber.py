@@ -27,6 +27,8 @@ for name, paths in PRODUCTIONS.items():
         ax.scatter(counts.index, counts.values, s=2, alpha=0.6)
         ax.set_ylabel("Number of outliers")
         ax.set_title(program)
+        ax.set_xticks(range(0, 5001, 500))
+        ax.grid(axis="x", linewidth=0.8)
 
     axes[-1].set_xlabel("Fiber ID")
     fig.suptitle(f"{name} — outliers per fiber ID")
