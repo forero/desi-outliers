@@ -36,10 +36,14 @@ for name in PRODUCTIONS:
 
     for ax, program in zip(axes, PROGRAMS):
         counts = all_counts[(name, program)]
-        ax.hist(counts, bins=50)
+        median = counts.median()
+        std = counts.std()
+        label = f"median={median:.0f}, std={std:.0f}"
+        ax.hist(counts, bins=50, label=label)
         ax.set_title(program)
         ax.set_xlabel("Outliers per tile")
         ax.set_ylabel("Number of tiles")
+        ax.legend()
 
     fig.suptitle(f"{name} — outliers per tile")
     fig.tight_layout()
