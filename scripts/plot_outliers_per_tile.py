@@ -12,7 +12,7 @@ PRODUCTIONS = {
     },
 }
 
-PROGRAMS = ["bright", "dark", "backup"]
+PROGRAMS = ["dark", "bright", "backup"]
 
 # per-tile outlier counts keyed by (production, program)
 all_counts = {}

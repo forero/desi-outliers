@@ -12,7 +12,7 @@ PRODUCTIONS = {
     },
 }
 
-PROGRAMS = ["bright", "dark", "backup"]
+PROGRAMS = ["dark", "bright", "backup"]
 
 for name, paths in PRODUCTIONS.items():
     outliers = pd.read_csv(paths["outliers"], usecols=["TILEID", "FIBER"])
