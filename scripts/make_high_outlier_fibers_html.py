@@ -148,7 +148,14 @@ html = f"""<!DOCTYPE html>
 </html>
 """
 
+import shutil, pathlib
+
 outpath = "html/high_outlier_fibers_loa_matterhorn.html"
 with open(outpath, "w") as f:
     f.write(html)
 print(f"Saved {outpath}")
+
+cfs_dir = pathlib.Path("/global/cfs/cdirs/desi/users/forero/outliers")
+cfs_dir.mkdir(parents=True, exist_ok=True)
+shutil.copy(outpath, cfs_dir / pathlib.Path(outpath).name)
+print(f"Copied to {cfs_dir / pathlib.Path(outpath).name}")
