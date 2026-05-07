@@ -42,7 +42,8 @@ The petal for a given fiber is `petal = fiber // 500`.
 desi-outliers/
 ├── notebooks/   # exploratory Jupyter notebooks
 ├── scripts/     # production Python scripts
-└── plots/       # output figures
+├── plots/       # output figures
+└── html/        # HTML reports and tables
 ```
 
 ## Zcatalog (Loa)
@@ -88,8 +89,8 @@ Total outliers across these 6 tiles: 367.
 
 ## HTML outputs
 
-- `dark_common_outliers_loa_matterhorn.html` — 6,188 dark tiles with common outliers in Loa+Matterhorn, sorted by count, with inspector links
-- `high_outlier_fibers_loa_matterhorn.html` — fibers with raw outlier count >mean+3σ per petal, for LRG/BGS × Loa/Matterhorn
+- `html/dark_common_outliers_loa_matterhorn.html` — 6,188 dark tiles with common outliers in Loa+Matterhorn, sorted by count, with inspector links
+- `html/high_outlier_fibers_loa_matterhorn.html` — fibers with raw outlier count >mean+3σ per petal, for LRG/BGS × Loa/Matterhorn
 
 ## Scripts
 
