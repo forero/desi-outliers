@@ -6,7 +6,7 @@ loa = pd.read_csv('/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv')
 mat = pd.read_csv('/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/all_outliers.csv')
 
 tiles_loa = pd.read_csv('/global/cfs/cdirs/desi/spectro/redux/loa/tiles-loa.csv', usecols=['TILEID','PROGRAM'])
-tiles_mat = pd.read_csv('/global/cfs/cdirs/desi/spectro/redux/daily/tiles-daily.csv', usecols=['TILEID','PROGRAM'])
+tiles_mat = pd.read_csv('/global/cfs/cdirs/desi/spectro/redux/matterhorn/tiles-matterhorn.csv', usecols=['TILEID','PROGRAM'])
 
 loa = loa.merge(tiles_loa, on='TILEID', how='left')
 mat = mat.merge(tiles_mat, on='TILEID', how='left')

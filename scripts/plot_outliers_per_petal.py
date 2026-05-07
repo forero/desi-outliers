@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 PRODUCTIONS = {
     "Matterhorn": {
         "outliers": "/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/all_outliers.csv",
-        "tiles": "/global/cfs/cdirs/desi/spectro/redux/daily/tiles-daily.csv",
+        "tiles": "/global/cfs/cdirs/desi/spectro/redux/matterhorn/tiles-matterhorn.csv",
     },
     "Loa": {
         "outliers": "/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv",

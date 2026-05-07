@@ -4,7 +4,7 @@ import pandas as pd
 OUTLIERS_LOA = "/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv"
 OUTLIERS_MAT = "/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/all_outliers.csv"
 TILES_LOA    = "/global/cfs/cdirs/desi/spectro/redux/loa/tiles-loa.csv"
-TILES_MAT    = "/global/cfs/cdirs/desi/spectro/redux/daily/tiles-daily.csv"
+TILES_MAT    = "/global/cfs/cdirs/desi/spectro/redux/matterhorn/tiles-matterhorn.csv"
 
 TARGETS = {
     "LRG": "dark",
