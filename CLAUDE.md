@@ -89,8 +89,10 @@ Total outliers across these 6 tiles: 367.
 
 ## HTML outputs
 
+All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdirs/desi/users/forero/outliers/`.
+
 - `html/dark_common_outliers_loa_matterhorn.html` — 6,188 dark tiles with common outliers in Loa+Matterhorn, sorted by count, with inspector links
-- `html/high_outlier_fibers_loa_matterhorn.html` — fibers with raw outlier count >mean+3σ per petal, for LRG/BGS × Loa/Matterhorn
+- `html/high_outlier_fibers_loa_matterhorn.html` — fibers with raw outlier count >mean+3σ per petal (LRG/BGS × Loa/Matterhorn), plus cross-comparisons across tracers and specprods; 7 fibers common to all four: 357, 464, 466, 651, 2171, 2773, 4923
 
 ## Scripts
 
