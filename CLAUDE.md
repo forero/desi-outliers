@@ -16,7 +16,7 @@ Both files share the same schema: `TARGETID, TILEID, FIBER`.
 | Production | Tiles CSV | Tiles FITS |
 |------------|-----------|------------|
 | Loa | `/global/cfs/cdirs/desi/spectro/redux/loa/tiles-loa.csv` | `…/tiles-loa.fits` |
-| Daily (Matterhorn) | `/global/cfs/cdirs/desi/spectro/redux/daily/tiles-daily.csv` | `…/tiles-daily.fits` |
+| Matterhorn | `/global/cfs/cdirs/desi/spectro/redux/matterhorn/tiles-matterhorn.csv` | `…/tiles-matterhorn.fits` |
 
 Key columns: `TILEID`, `LASTNIGHT` (used as the thrudate in file paths).
 
