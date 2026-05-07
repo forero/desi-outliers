@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
-import fitsio
 
-ZCAT     = "/global/cfs/cdirs/desi/spectro/redux/loa/zcatalog/v1/zall-tilecumulative-loa.fits"
 OUTLIERS_LOA = "/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv"
 OUTLIERS_MAT = "/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/all_outliers.csv"
 TILES_LOA    = "/global/cfs/cdirs/desi/spectro/redux/loa/tiles-loa.csv"
@@ -23,65 +21,44 @@ TILES = {
     "Matterhorn": TILES_MAT,
 }
 
-print("Reading zcatalog...")
-data = fitsio.read(ZCAT, ext="ZCATALOG", columns=["TARGETID", "TILEID", "PROGRAM", "FIBER"])
-df_zcat = pd.DataFrame({
-    "TARGETID": data["TARGETID"].byteswap().newbyteorder(),
-    "TILEID":   data["TILEID"].byteswap().newbyteorder(),
-    "PROGRAM":  [p.strip() for p in data["PROGRAM"]],
-    "FIBER":    data["FIBER"].byteswap().newbyteorder(),
-})
-
 fibers = np.arange(5000)
 
-# pre-compute total targets per fiber per program from Loa zcatalog
-n_total_by_program = {}
-for label, program in TARGETS.items():
-    sub = df_zcat[df_zcat["PROGRAM"] == program]
-    n_total_by_program[label] = sub.groupby("FIBER").size().reindex(fibers, fill_value=0).values
-
-# compute outlier fractions per fiber per (production, target class)
-results = {}  # key: (prod, label) -> dict fiber -> fraction
+# compute raw outlier counts per fiber per (production, target class)
+results = {}  # key: (prod, label) -> array of counts per fiber
 
 for prod, outlier_path in PRODUCTIONS.items():
     print(f"Reading outliers for {prod}...")
     tiles = pd.read_csv(TILES[prod], usecols=["TILEID", "PROGRAM"])
-    out = pd.read_csv(outlier_path, usecols=["TARGETID", "TILEID", "FIBER"])
+    out = pd.read_csv(outlier_path, usecols=["TILEID", "FIBER"])
     out = out.merge(tiles, on="TILEID", how="left")
 
     for label, program in TARGETS.items():
         sub = out[out["PROGRAM"] == program]
-        n_out = sub.groupby("FIBER").size().reindex(fibers, fill_value=0).values
-        n_tot = n_total_by_program[label]
-        frac  = np.where(n_tot > 0, n_out / n_tot, np.nan)
-        results[(prod, label)] = frac
+        counts = sub.groupby("FIBER").size().reindex(fibers, fill_value=0).values.astype(float)
+        results[(prod, label)] = counts
 
 # find high-outlier fibers per petal (mean + 3 sigma within petal)
 sections = []
 for label in TARGETS:
     for prod in PRODUCTIONS:
-        frac = results[(prod, label)]
+        counts = results[(prod, label)]
         high_fibers = []
         for petal in range(10):
             sl = slice(petal * 500, (petal + 1) * 500)
-            f_petal = frac[sl]
-            valid = np.isfinite(f_petal)
-            if valid.sum() < 2:
-                continue
-            mean = f_petal[valid].mean()
-            std  = f_petal[valid].std()
+            c_petal = counts[sl]
+            mean = c_petal.mean()
+            std  = c_petal.std()
             threshold = mean + 3 * std
-            above = np.where(valid & (f_petal > threshold))[0]
+            above = np.where(c_petal > threshold)[0]
             for idx in above:
                 fiber = petal * 500 + idx
                 high_fibers.append({
-                    "Petal":     petal,
-                    "Fiber":     fiber,
-                    "Fraction":  f_petal[idx],
-                    "Mean":      mean,
-                    "Std":       std,
-                    "Threshold": threshold,
-                    "Nsigma":    (f_petal[idx] - mean) / std,
+                    "Petal":   petal,
+                    "Fiber":   fiber,
+                    "Count":   int(c_petal[idx]),
+                    "Mean":    mean,
+                    "Std":     std,
+                    "Nsigma":  (c_petal[idx] - mean) / std,
                 })
         sections.append((label, prod, high_fibers))
         print(f"{label} {prod}: {len(high_fibers)} fibers above mean+3sigma")
@@ -90,12 +67,12 @@ for label in TARGETS:
 def make_table(rows, label, prod):
     if not rows:
         return f"<p>No fibers above mean+3&sigma; for {label} {prod}.</p>"
-    header = "<tr><th>Petal</th><th>Fiber</th><th>Outlier fraction</th><th>Petal mean</th><th>Petal std</th><th>N&sigma; above mean</th></tr>"
+    header = "<tr><th>Petal</th><th>Fiber</th><th>Outlier count</th><th>Petal mean</th><th>Petal std</th><th>N&sigma; above mean</th></tr>"
     body = ""
-    for r in sorted(rows, key=lambda x: (-x["Petal"], -x["Fraction"])):
+    for r in sorted(rows, key=lambda x: (-x["Petal"], -x["Count"])):
         body += (f"<tr><td>{r['Petal']}</td><td>{r['Fiber']}</td>"
-                 f"<td>{r['Fraction']:.4f}</td><td>{r['Mean']:.4f}</td>"
-                 f"<td>{r['Std']:.4f}</td><td>{r['Nsigma']:.1f}</td></tr>")
+                 f"<td>{r['Count']}</td><td>{r['Mean']:.1f}</td>"
+                 f"<td>{r['Std']:.1f}</td><td>{r['Nsigma']:.1f}</td></tr>")
     return f"<table><thead>{header}</thead><tbody>{body}</tbody></table>"
 
 section_html = ""
@@ -121,7 +98,7 @@ html = f"""<!DOCTYPE html>
 </head>
 <body>
   <h1>Fibers with outlier fraction &gt; mean + 3&sigma; per petal</h1>
-  <p>Denominator: total targets per fiber from the Loa zcatalog (used for both productions).</p>
+  <p>Selection: fibers with raw outlier count &gt; mean + 3&sigma; within each petal.</p>
   {section_html}
 </body>
 </html>
