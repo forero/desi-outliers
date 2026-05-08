@@ -27,10 +27,10 @@ print("Reading zcatalog (dark only)...")
 data = fitsio.read(ZCAT, ext="ZCATALOG",
                    columns=["TARGETID", "TILEID", "PROGRAM", "PETAL_LOC"])
 df = pd.DataFrame({
-    "TARGETID": data["TARGETID"].byteswap().newbyteorder(),
-    "TILEID":   data["TILEID"].byteswap().newbyteorder(),
+    "TARGETID": data["TARGETID"].byteswap().view(data["TARGETID"].dtype.newbyteorder()),
+    "TILEID":   data["TILEID"].byteswap().view(data["TILEID"].dtype.newbyteorder()),
     "PROGRAM":  [p.strip() for p in data["PROGRAM"]],
-    "PETAL":    data["PETAL_LOC"].byteswap().newbyteorder(),
+    "PETAL":    data["PETAL_LOC"].byteswap().view(data["PETAL_LOC"].dtype.newbyteorder()),
 })
 df = df[df["PROGRAM"] == "dark"].copy()
 df = df.merge(dark_tiles, on="TILEID", how="left")

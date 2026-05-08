@@ -23,9 +23,9 @@ data = data[mask]
 print(f"  {len(data):,} {program} targets")
 
 df = pd.DataFrame({
-    "TARGETID": data["TARGETID"].byteswap().newbyteorder(),
-    "TILEID":   data["TILEID"].byteswap().newbyteorder(),
-    "TSNR":     data[tsnr_col].byteswap().newbyteorder(),
+    "TARGETID": data["TARGETID"].byteswap().view(data["TARGETID"].dtype.newbyteorder()),
+    "TILEID":   data["TILEID"].byteswap().view(data["TILEID"].dtype.newbyteorder()),
+    "TSNR":     data[tsnr_col].byteswap().view(data[tsnr_col].dtype.newbyteorder()),
 })
 
 print("Reading outliers...")

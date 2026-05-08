@@ -16,20 +16,20 @@ TARGETS = {
 print("Reading QA file...")
 qa_data = fitsio.read(QA_FILE, ext=1)
 qa = pd.DataFrame({
-    "FIBER":    qa_data["FIBER"].byteswap().newbyteorder(),
-    "lrg_frac_fail":            qa_data["lrg_frac_fail"].byteswap().newbyteorder(),
-    "lrg_frac_fail_err":        qa_data["lrg_frac_fail_err"].byteswap().newbyteorder(),
-    "bgs_bright_frac_fail":     qa_data["bgs_bright_frac_fail"].byteswap().newbyteorder(),
-    "bgs_bright_frac_fail_err": qa_data["bgs_bright_frac_fail_err"].byteswap().newbyteorder(),
+    "FIBER":    qa_data["FIBER"].byteswap().view(qa_data["FIBER"].dtype.newbyteorder()),
+    "lrg_frac_fail":            qa_data["lrg_frac_fail"].byteswap().view(qa_data["lrg_frac_fail"].dtype.newbyteorder()),
+    "lrg_frac_fail_err":        qa_data["lrg_frac_fail_err"].byteswap().view(qa_data["lrg_frac_fail_err"].dtype.newbyteorder()),
+    "bgs_bright_frac_fail":     qa_data["bgs_bright_frac_fail"].byteswap().view(qa_data["bgs_bright_frac_fail"].dtype.newbyteorder()),
+    "bgs_bright_frac_fail_err": qa_data["bgs_bright_frac_fail_err"].byteswap().view(qa_data["bgs_bright_frac_fail_err"].dtype.newbyteorder()),
 }).sort_values("FIBER").reset_index(drop=True)
 
 print("Reading zcatalog...")
 data = fitsio.read(ZCAT, ext="ZCATALOG", columns=["TARGETID", "TILEID", "PROGRAM", "FIBER"])
 df_zcat = pd.DataFrame({
-    "TARGETID": data["TARGETID"].byteswap().newbyteorder(),
-    "TILEID":   data["TILEID"].byteswap().newbyteorder(),
+    "TARGETID": data["TARGETID"].byteswap().view(data["TARGETID"].dtype.newbyteorder()),
+    "TILEID":   data["TILEID"].byteswap().view(data["TILEID"].dtype.newbyteorder()),
     "PROGRAM":  [p.strip() for p in data["PROGRAM"]],
-    "FIBER":    data["FIBER"].byteswap().newbyteorder(),
+    "FIBER":    data["FIBER"].byteswap().view(data["FIBER"].dtype.newbyteorder()),
 })
 print(f"  {len(df_zcat):,} total targets")
 

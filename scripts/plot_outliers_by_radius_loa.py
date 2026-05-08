@@ -11,11 +11,11 @@ print("Reading zcatalog...")
 data = fitsio.read(ZCAT, ext="ZCATALOG",
                    columns=["TARGETID", "TILEID", "PROGRAM", "MEAN_FIBER_X", "MEAN_FIBER_Y"])
 df = pd.DataFrame({
-    "TARGETID": data["TARGETID"].byteswap().newbyteorder(),
-    "TILEID":   data["TILEID"].byteswap().newbyteorder(),
+    "TARGETID": data["TARGETID"].byteswap().view(data["TARGETID"].dtype.newbyteorder()),
+    "TILEID":   data["TILEID"].byteswap().view(data["TILEID"].dtype.newbyteorder()),
     "PROGRAM":  [p.strip() for p in data["PROGRAM"]],
-    "X":        data["MEAN_FIBER_X"].byteswap().newbyteorder(),
-    "Y":        data["MEAN_FIBER_Y"].byteswap().newbyteorder(),
+    "X":        data["MEAN_FIBER_X"].byteswap().view(data["MEAN_FIBER_X"].dtype.newbyteorder()),
+    "Y":        data["MEAN_FIBER_Y"].byteswap().view(data["MEAN_FIBER_Y"].dtype.newbyteorder()),
 })
 df["RADIUS"] = np.sqrt(df["X"]**2 + df["Y"]**2)
 print(f"  {len(df):,} total targets")
