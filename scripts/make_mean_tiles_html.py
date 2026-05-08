@@ -12,16 +12,18 @@ loa = pd.read_csv(LOA_OUTLIERS)
 mat = pd.read_csv(MAT_OUTLIERS)
 
 print("Reading tiles...")
-tiles_loa = pd.read_csv(LOA_TILES, usecols=["TILEID", "PROGRAM"])
-tiles_mat = pd.read_csv(MAT_TILES, usecols=["TILEID", "PROGRAM"])
+tiles_loa = pd.read_csv(LOA_TILES, usecols=["TILEID", "PROGRAM", "SURVEY"])
+tiles_mat = pd.read_csv(MAT_TILES, usecols=["TILEID", "PROGRAM", "SURVEY"])
 
 loa_tileids = set(loa["TILEID"].unique())
 
-# Loa: all tiles in Loa
+# Loa: all tiles in Loa, main survey only
 loa_full = loa.merge(tiles_loa, on="TILEID", how="left")
+loa_full = loa_full[loa_full["SURVEY"] == "main"]
 
-# Matterhorn: only tiles whose TILEID is not in Loa
+# Matterhorn: only tiles whose TILEID is not in Loa, main survey only
 mat_not_loa = mat[~mat["TILEID"].isin(loa_tileids)].merge(tiles_mat, on="TILEID", how="left")
+mat_not_loa = mat_not_loa[mat_not_loa["SURVEY"] == "main"]
 
 print(f"Loa tiles: {loa['TILEID'].nunique():,}")
 print(f"Matterhorn tiles not in Loa: {mat_not_loa['TILEID'].nunique():,}")
