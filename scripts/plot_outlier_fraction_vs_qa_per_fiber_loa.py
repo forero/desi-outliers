@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 ZCAT     = "/global/cfs/cdirs/desi/spectro/redux/loa/zcatalog/v1/zall-tilecumulative-loa.fits"
-OUTLIERS = "/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv"
+OUTLIERS = "/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/all_outliers.csv"
 QA_FILE  = "/global/cfs/cdirs/desicollab/users/rongpu/redshift_qa/new/kibo/per_fiber_qa_stats.fits"
 
 TARGETS = {

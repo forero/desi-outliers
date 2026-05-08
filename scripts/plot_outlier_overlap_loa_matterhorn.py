@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-loa = pd.read_csv('/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv')
+loa = pd.read_csv('/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/all_outliers.csv')
 mat = pd.read_csv('/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/all_outliers.csv')
 
 tiles_loa = pd.read_csv('/global/cfs/cdirs/desi/spectro/redux/loa/tiles-loa.csv', usecols=['TILEID','PROGRAM'])

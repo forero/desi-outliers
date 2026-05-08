@@ -4,7 +4,7 @@ import fitsio
 import matplotlib.pyplot as plt
 
 ZCAT     = "/global/cfs/cdirs/desi/spectro/redux/loa/zcatalog/v1/zall-tilecumulative-loa.fits"
-OUTLIERS = "/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv"
+OUTLIERS = "/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/all_outliers.csv"
 TILES    = "/global/cfs/cdirs/desi/spectro/redux/loa/tiles-loa.csv"
 BAD_FILE = "/global/cfs/cdirs/desi/survey/catalogs/DA2/LSS/loa-v1/lrg_bad_per_petal-night.txt"
 

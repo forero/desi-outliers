@@ -7,7 +7,7 @@ Repo for making plots of DESI spectroscopic outliers identified via UMAP analysi
 | Production | Path | Rows |
 |------------|------|------|
 | Matterhorn | `/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/all_outliers.csv` | ~2.2M |
-| Loa | `/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv` | ~1.1M |
+| Loa | `/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/all_outliers.csv` | ~1.1M |
 
 Both files share the same schema: `TARGETID, TILEID, FIBER`.
 

@@ -7,7 +7,7 @@ PRODUCTIONS = {
         "tiles": "/global/cfs/cdirs/desi/spectro/redux/matterhorn/tiles-matterhorn.csv",
     },
     "Loa": {
-        "outliers": "/pscratch/sd/v/vtorresg/desi-lenses/df_outliers.csv",
+        "outliers": "/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/all_outliers.csv",
         "tiles": "/global/cfs/cdirs/desi/spectro/redux/loa/tiles-loa.csv",
     },
 }
