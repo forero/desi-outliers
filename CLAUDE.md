@@ -93,6 +93,7 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 
 - `html/dark_common_outliers_loa_matterhorn.html` — 6,188 dark tiles with common outliers in Loa+Matterhorn, sorted by count, with inspector links
 - `html/high_outlier_fibers_loa_matterhorn.html` — fibers with raw outlier count >mean+3σ per petal (LRG/BGS × Loa/Matterhorn), plus cross-comparisons across tracers and specprods; 7 fibers common to all four: 357, 464, 466, 651, 2171, 2773, 4923
+- `html/mean_tiles_loa_matterhorn.html` — 3 randomly selected main-survey tiles per program (dark/bright) for Loa and for Matterhorn tiles not in Loa, with inspector links
 
 ## Scripts
 
@@ -108,6 +109,7 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 - `scripts/plot_outlier_overlap_loa_matterhorn.py` — Loa-only / common / Matterhorn-only outlier counts by program
 - `scripts/make_dark_common_outliers_html.py` — generates `dark_common_outliers_loa_matterhorn.html`
 - `scripts/make_high_outlier_fibers_html.py` — generates `high_outlier_fibers_loa_matterhorn.html`
+- `scripts/make_mean_tiles_html.py` — generates `mean_tiles_loa_matterhorn.html`; 3 randomly sampled main-survey tiles per program for Loa and Matterhorn-only tiles (seed=42)
 
 ## Notebooks
 
