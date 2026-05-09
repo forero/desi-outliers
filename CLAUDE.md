@@ -18,7 +18,7 @@ Both files share the same schema: `TARGETID, TILEID, FIBER`.
 | Loa | `/global/cfs/cdirs/desi/spectro/redux/loa/tiles-loa.csv` | `…/tiles-loa.fits` |
 | Matterhorn | `/global/cfs/cdirs/desi/spectro/redux/matterhorn/tiles-matterhorn.csv` | `…/tiles-matterhorn.fits` |
 
-Key columns: `TILEID`, `LASTNIGHT` (used as the thrudate in file paths).
+Key columns: `TILEID`, `LASTNIGHT` (used as the thrudate in file paths), `PROGRAM`, `SURVEY` (`main`, `sv3`, `cmx`, etc.).
 
 ## Tile file layout
 
@@ -107,6 +107,9 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 - `scripts/plot_outlier_fraction_vs_qa_per_fiber_loa.py` — outlier count and QA failure rate vs fiber ID + scatter with correlation (LRG, BGS)
 - `scripts/plot_qa_correlation_per_petal_loa.py` — scatter of outlier fraction vs QA failure rate per petal, 2×5 panels (LRG, BGS)
 - `scripts/plot_outlier_overlap_loa_matterhorn.py` — Loa-only / common / Matterhorn-only outlier counts by program
+- `scripts/plot_bad_petal_vs_outliers_loa.py` — outlier fraction for bad vs good (night, petal) pairs in dark program (Loa)
+- `scripts/plot_outliers_per_month_matterhorn.py` — outlier counts per month by program (Matterhorn)
+- `scripts/plot_outliers_heatmap_month_petal_matterhorn.py` — heatmap of outlier fraction per month × petal (Matterhorn); denominator = n_tiles × 500
 - `scripts/make_dark_common_outliers_html.py` — generates `dark_common_outliers_loa_matterhorn.html`
 - `scripts/make_high_outlier_fibers_html.py` — generates `high_outlier_fibers_loa_matterhorn.html`
 - `scripts/make_mean_tiles_html.py` — generates `mean_tiles_loa_matterhorn.html`; 3 randomly sampled main-survey tiles per program for Loa and Matterhorn-only tiles (seed=42)
