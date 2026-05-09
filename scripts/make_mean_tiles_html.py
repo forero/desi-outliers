@@ -29,12 +29,11 @@ print(f"Loa tiles: {loa['TILEID'].nunique():,}")
 print(f"Matterhorn tiles not in Loa: {mat_not_loa['TILEID'].nunique():,}")
 
 
-def select_near_mean(df, program, n=3):
+def select_near_mean(df, program, n=3, seed=42):
     sub = df[df["PROGRAM"] == program]
     counts = sub.groupby("TILEID").size().reset_index(name="N_OUTLIERS")
     mean_val = counts["N_OUTLIERS"].mean()
-    counts["dist"] = (counts["N_OUTLIERS"] - mean_val).abs()
-    selected = counts.nsmallest(n, "dist").sort_values("N_OUTLIERS").reset_index(drop=True)
+    selected = counts.sample(n=n, random_state=seed).sort_values("N_OUTLIERS").reset_index(drop=True)
     return selected, mean_val
 
 
