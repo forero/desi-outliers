@@ -1,0 +1,47 @@
+\section{Tile Selection for Visual Inspection}
+
+We select tiles from the Loa spectroscopic production for visual inspection (VI)
+of UMAP-identified outlier spectra.
+The Loa outlier catalog contains approximately 1.1 million entries,
+each characterised by a target identifier (\texttt{TARGETID}), tile identifier (\texttt{TILEID}),
+and fiber number (\texttt{FIBER}).
+After cross-matching with the Loa tile summary file
+(\texttt{tiles-loa.csv}), we restrict the sample to tiles belonging to the
+main survey (\texttt{SURVEY = main}), excluding commissioning (CMX) and
+survey-validation (SV) observations.
+
+The main-survey Loa tiles are split by observing program.
+The dark program contains 6{,}671 tiles with a mean of $28.7 \pm 14.6$ outliers per tile
+(range 2--155).
+The bright program contains 5{,}165 tiles with a mean of $89.7 \pm 48.4$ outliers per tile
+(range 10--380).
+
+To obtain a representative but unbiased sample, we randomly select three tiles
+from each program (random seed 42).
+Table~\ref{tab:vi_tiles_loa} lists the selected tiles together with their
+outlier counts and links to the DESI spectroscopic inspector.
+
+\begin{table}[h]
+\centering
+\caption{Tiles selected for visual inspection from the Loa main survey.}
+\label{tab:vi_tiles_loa}
+\begin{tabular}{llr}
+\hline
+Program & TILEID & N outliers \\
+\hline
+dark  & 1406  & 10  \\
+dark  & 3473  & 30  \\
+dark  & 3833  & 39  \\
+\hline
+bright & 25300 & 68  \\
+bright & 22175 & 101 \\
+bright & 22097 & 143 \\
+\hline
+\end{tabular}
+\end{table}
+
+The selected dark tiles span the range 10--39 outliers, bracketing the program mean of 28.7.
+The selected bright tiles span the range 68--143 outliers, bracketing the program mean of 89.7.
+Inspector links for all six tiles, listing the individual fiber numbers of the outlier
+spectra, are provided in the online HTML report
+(\texttt{html/mean\_tiles\_loa\_matterhorn.html}).
