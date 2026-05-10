@@ -117,6 +117,29 @@ Visual inspection of 6 randomly selected main-survey tiles (3 dark, 3 bright); r
 | Dark+Bright | 654,954 | 38,913 | 5.94% [5.88%, 6.00%] |
 | All | 1,004,881 | 39,332 | 3.91% [3.88%, 3.95%] |
 
+## UMAP embedding batches (Matterhorn)
+
+NPZ files at `/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/outlier_umap_batches_test/`.
+Batch `outlier_umap_batch_0001.npz` has 100,000 spectra. Key arrays (all length 100,000):
+
+| Key | Description |
+|-----|-------------|
+| `embedding` | (N, 2) 2D UMAP coordinates |
+| `targetids` | TARGETID |
+| `tileids` | TILEID |
+| `fibers` / `fiberids` | focal-plane fiber (0–4999); identical in this batch |
+| `nights` | NIGHT |
+| `petals` | petal (0–9) |
+| `global_indices` | index into the full outlier catalog |
+
+## HDBSCAN clustering (Matterhorn, batch 0001)
+
+Run with `min_cluster_size=200, min_samples=50` via `sklearn.cluster.HDBSCAN`.
+
+- 126 clusters, 88,964 points (89%) assigned; 11,036 noise points (11%)
+- Labels saved to `data/cluster_labels.npy`
+- Cluster representatives (1 per cluster, closest to CoM) in `data/cluster_representatives.csv`
+
 ## HTML outputs
 
 All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdirs/desi/users/forero/outliers/`.
@@ -124,6 +147,9 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 - `html/dark_common_outliers_loa_matterhorn.html` — 6,188 dark tiles with common outliers in Loa+Matterhorn, sorted by count, with inspector links
 - `html/high_outlier_fibers_loa_matterhorn.html` — fibers with raw outlier count >mean+3σ per petal (LRG/BGS × Loa/Matterhorn), plus cross-comparisons across tracers and specprods; 7 fibers common to all four: 357, 464, 466, 651, 2171, 2773, 4923
 - `html/mean_tiles_loa_matterhorn.html` — 3 randomly selected main-survey tiles per program (dark/bright) for Loa and for Matterhorn tiles not in Loa, with inspector links
+- `html/cluster_representatives_matterhorn.html` — sortable table: 1 representative spectrum per HDBSCAN cluster (closest to CoM), with inspector links
+- `html/largest_cluster_matterhorn.html` — 10 spectra closest to CoM of the largest cluster
+- `html/all_clusters_matterhorn.html` — all 126 clusters sorted by size; 10 CoM-closest spectra each; plus 10 randomly sampled noise spectra (seed=42) in a separate section at the bottom
 
 ## Scripts
 
@@ -146,6 +172,12 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 - `scripts/make_dark_common_outliers_html.py` — generates `dark_common_outliers_loa_matterhorn.html`
 - `scripts/make_high_outlier_fibers_html.py` — generates `high_outlier_fibers_loa_matterhorn.html`
 - `scripts/make_mean_tiles_html.py` — generates `mean_tiles_loa_matterhorn.html`; 3 randomly sampled main-survey tiles per program for Loa and Matterhorn-only tiles (seed=42)
+- `scripts/make_cluster_representatives_html.py` — generates `cluster_representatives_matterhorn.html` from `data/cluster_representatives.csv`
+- `scripts/make_largest_cluster_html.py` — generates `largest_cluster_matterhorn.html`; 10 CoM-closest spectra from the largest cluster
+- `scripts/make_all_clusters_html.py` — generates `all_clusters_matterhorn.html`; all 126 clusters + noise section
+
+### Clustering
+- `scripts/dbscan_umap_batch.py` — runs HDBSCAN on a UMAP NPZ batch; saves `data/cluster_labels.npy` and `data/cluster_representatives.csv`; produces `plots/dbscan_umap_batch.png`
 
 ### VI and redshift quality
 - `scripts/vi_analysis_loa.py` — Clopper-Pearson VI fractions (bad/good/zwarn) per tile and aggregated, plus full-catalog ZWARN≠0 fractions from zcatalog cross-match
