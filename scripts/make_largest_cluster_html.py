@@ -8,11 +8,11 @@ LABELS     = "data/cluster_labels.npy"
 SPECPROD   = "matterhorn"
 BASE_URL   = f"https://inspector.desi.lbl.gov/{SPECPROD}/spectra/tiles"
 N_SAMPLE   = 10
-SEED       = 42
 
 print("Loading data...")
 f      = np.load(NPZ_FILE)
 labels = np.load(LABELS)
+emb    = f["embedding"]
 
 # find the largest cluster
 unique, counts = np.unique(labels[labels >= 0], return_counts=True)
@@ -20,11 +20,11 @@ largest_cid    = unique[counts.argmax()]
 largest_size   = counts.max()
 print(f"Largest cluster: {largest_cid}  ({largest_size:,} points)")
 
-# random sample of N_SAMPLE points from that cluster
-rng      = np.random.default_rng(SEED)
+# select the N_SAMPLE points closest to the centre of mass
 indices  = np.where(labels == largest_cid)[0]
-sampled  = rng.choice(indices, size=N_SAMPLE, replace=False)
-sampled  = sorted(sampled)
+centre   = emb[indices].mean(axis=0)
+dists    = np.linalg.norm(emb[indices] - centre, axis=1)
+sampled  = indices[np.argsort(dists)[:N_SAMPLE]]
 
 rows = ""
 all_targetids = []
@@ -69,8 +69,8 @@ html = f"""<!DOCTYPE html>
     <a href="{all_url}" target="_blank">&#9654; View all {N_SAMPLE} sampled spectra in the inspector</a>
   </p>
   <p>
-    {N_SAMPLE} randomly selected spectra (seed={SEED}) from the largest cluster
-    of {largest_size:,} points.
+    The {N_SAMPLE} spectra closest to the centre of mass of the largest cluster
+    ({largest_size:,} points).
   </p>
   <table>
     <thead>
