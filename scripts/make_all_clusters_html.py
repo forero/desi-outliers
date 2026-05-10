@@ -8,6 +8,7 @@ LABELS   = "data/cluster_labels.npy"
 SPECPROD = "matterhorn"
 BASE_URL = f"https://inspector.desi.lbl.gov/{SPECPROD}/spectra"
 N_SAMPLE = 10
+RNG_SEED = 42
 
 print("Loading data...")
 f      = np.load(NPZ_FILE)
@@ -67,6 +68,45 @@ for cid, size in zip(unique, counts):
     </table>
   </div>"""
 
+# ── noise section ─────────────────────────────────────────────────────────────
+noise_indices = np.where(labels == -1)[0]
+rng           = np.random.default_rng(RNG_SEED)
+noise_sample  = rng.choice(noise_indices, size=N_SAMPLE, replace=False)
+
+noise_targetids = [int(f["targetids"][i]) for i in noise_sample]
+noise_tileids   = [int(f["tileids"][i])   for i in noise_sample]
+noise_fibers    = [int(f["fibers"][i])    for i in noise_sample]
+noise_nights    = [int(f["nights"][i])    for i in noise_sample]
+
+noise_cluster_url = f"{BASE_URL}/" + ",".join(str(t) for t in noise_targetids)
+
+noise_rows = ""
+for targetid, tileid, fiber, night in zip(noise_targetids, noise_tileids, noise_fibers, noise_nights):
+    tile_url = f"{BASE_URL}/tiles/{tileid}/{fiber}"
+    noise_rows += f"""
+          <tr>
+            <td>{targetid}</td>
+            <td>{tileid}</td>
+            <td>{fiber}</td>
+            <td>{night}</td>
+            <td><a href="{tile_url}" target="_blank">inspector</a></td>
+          </tr>"""
+
+noise_html = f"""
+  <div class="cluster noise-section">
+    <h2>Noise (unassigned) &mdash; {len(noise_indices):,} spectra &nbsp;
+      <span class="centre">(not assigned to any cluster)</span>
+      &nbsp;<a href="{noise_cluster_url}" target="_blank">[view {N_SAMPLE} in inspector]</a>
+    </h2>
+    <table>
+      <thead>
+        <tr><th>TARGETID</th><th>TILEID</th><th>FIBER</th><th>NIGHT</th><th>Inspector</th></tr>
+      </thead>
+      <tbody>{noise_rows}
+      </tbody>
+    </table>
+  </div>"""
+
 all_url = f"{BASE_URL}/" + ",".join(all_section_targetids)
 n_total = len(all_section_targetids)
 
@@ -88,6 +128,7 @@ html = f"""<!DOCTYPE html>
     tr:nth-child(even) {{ background: #fafafa; }}
     a {{ color: #0066cc; }}
     .cluster {{ margin-bottom: 1.5em; }}
+    .noise-section {{ border-top: 2px solid #999; padding-top: 0.5em; }}
   </style>
 </head>
 <body>
@@ -97,6 +138,7 @@ html = f"""<!DOCTYPE html>
   </p>
   <p>For each cluster: the {N_SAMPLE} spectra closest to the centre of mass in UMAP space.</p>
 {sections_html}
+{noise_html}
 </body>
 </html>
 """
