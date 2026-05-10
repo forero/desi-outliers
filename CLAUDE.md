@@ -54,7 +54,7 @@ Per-spectrum redshift catalog with TSNR2 metrics:
 /global/cfs/cdirs/desi/spectro/redux/loa/zcatalog/v1/zall-tilecumulative-loa.fits
 ```
 
-Key columns: `TARGETID`, `TILEID`, `PROGRAM`, `TSNR2_LRG` (dark), `TSNR2_BGS` (bright).
+Key columns: `TARGETID`, `TILEID`, `SURVEY`, `PROGRAM`, `ZWARN`, `TSNR2_LRG` (dark), `TSNR2_BGS` (bright).
 
 ## Selected tiles for visual inspection (Loa)
 
@@ -87,6 +87,36 @@ Total outliers across these 6 tiles: 367.
 
 **Key finding**: UMAP high-outlier fibers (>mean+3σ per petal) and KS bad fibers are almost completely disjoint — they detect different failure modes. Only fiber 3974 appears in both (BGS).
 
+## VI data (Loa)
+
+Visual inspection of 6 randomly selected main-survey tiles (3 dark, 3 bright); results in `data/vi_tiles_loa.csv`.
+
+**VI fractions (95% Clopper-Pearson)**:
+
+| Program | N inspected | VI problems | No VI problem | ZWARN≠0 |
+|---------|------------|-------------|---------------|---------|
+| Dark | 79 | 79.7% [69.2%, 88.0%] | 16 | 16.5% [9.1%, 26.5%] |
+| Bright | 312 | 63.5% [57.9%, 68.8%] | 114 | 1.0% [0.2%, 2.8%] |
+| All | 391 | 66.8% [61.8%, 71.4%] | 130 | 4.1% [2.4%, 6.6%] |
+
+**Extrapolated no-VI-problem outliers in full Loa main survey**:
+
+| Program | N total | Estimated no-VI-problem |
+|---------|---------|------------------------|
+| Dark | 191,411 | 38,767 [23,051 – 58,946] |
+| Bright | 463,543 | 169,371 [144,558 – 195,382] |
+| Combined | 654,954 | 217,760 [187,271 – 249,924] |
+
+**ZWARN≠0 in full Loa main survey** (from zcatalog cross-match):
+
+| Program | N outliers | ZWARN≠0 | Fraction |
+|---------|-----------|---------|---------|
+| Dark | 191,411 | 30,692 | 16.03% [15.87%, 16.20%] |
+| Bright | 463,543 | 8,221 | 1.77% [1.74%, 1.81%] |
+| Backup | 349,927 | 419 | 0.12% [0.11%, 0.13%] |
+| Dark+Bright | 654,954 | 38,913 | 5.94% [5.88%, 6.00%] |
+| All | 1,004,881 | 39,332 | 3.91% [3.88%, 3.95%] |
+
 ## HTML outputs
 
 All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdirs/desi/users/forero/outliers/`.
@@ -113,6 +143,8 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 - `scripts/make_dark_common_outliers_html.py` — generates `dark_common_outliers_loa_matterhorn.html`
 - `scripts/make_high_outlier_fibers_html.py` — generates `high_outlier_fibers_loa_matterhorn.html`
 - `scripts/make_mean_tiles_html.py` — generates `mean_tiles_loa_matterhorn.html`; 3 randomly sampled main-survey tiles per program for Loa and Matterhorn-only tiles (seed=42)
+- `scripts/vi_statistics_loa.py` — Clopper-Pearson VI fractions (bad/good/zwarn) per tile and aggregated by program, from `data/vi_tiles_loa.csv`
+- `scripts/zwarn_fraction_loa.py` — ZWARN≠0 fraction in full Loa main-survey outlier catalog, cross-matched against zcatalog; results by program with Clopper-Pearson intervals
 
 ## Notebooks
 
