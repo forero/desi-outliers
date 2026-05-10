@@ -127,24 +127,28 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 
 ## Scripts
 
-- `scripts/plot_outliers_by_program.py` — bar chart of outlier counts by program, per production + comparison
-- `scripts/plot_outliers_by_fiber.py` — scatter of outliers vs fiber ID, split by program (dark/bright/backup panels)
-- `scripts/plot_outliers_per_tile.py` — histogram of outliers per tile, per production + normalized comparison
-- `scripts/plot_outliers_per_petal.py` — bar chart of outliers per petal ID, per production + comparison
+### Distribution plots
+- `scripts/plot_distributions.py` — outliers by program, per tile, per petal, and by fiber for both productions; loads each catalog once and produces per-production + comparison plots
 - `scripts/plot_tsnr_vs_outliers_loa.py` — TSNR distribution and outlier fraction vs TSNR (Loa); usage: `python script.py [dark|bright|backup]`
-- `scripts/plot_outliers_by_radius_loa.py` — outlier fraction vs focal plane radius, 3 programs (Loa)
-- `scripts/plot_outliers_by_radius_per_petal_loa.py` — outlier fraction vs radius per petal, 2×5 panels (Loa)
-- `scripts/plot_outlier_fraction_vs_qa_per_fiber_loa.py` — outlier count and QA failure rate vs fiber ID + scatter with correlation (LRG, BGS)
-- `scripts/plot_qa_correlation_per_petal_loa.py` — scatter of outlier fraction vs QA failure rate per petal, 2×5 panels (LRG, BGS)
 - `scripts/plot_outlier_overlap_loa_matterhorn.py` — Loa-only / common / Matterhorn-only outlier counts by program
 - `scripts/plot_bad_petal_vs_outliers_loa.py` — outlier fraction for bad vs good (night, petal) pairs in dark program (Loa)
-- `scripts/plot_outliers_per_month_matterhorn.py` — outlier counts per month by program (Matterhorn)
-- `scripts/plot_outliers_heatmap_month_petal_matterhorn.py` — heatmap of outlier fraction per month × petal (Matterhorn); denominator = n_tiles × 500
+
+### Spatial analysis
+- `scripts/plot_radius_loa.py` — outlier fraction vs focal plane radius (overall 3-program + per-petal 2×5 panels); loads zcatalog once
+
+### QA correlation
+- `scripts/plot_qa_loa.py` — outlier fraction vs QA failure rate per fiber (3-panel) and per petal (2×5 scatter) for LRG and BGS; loads QA file + zcatalog once
+
+### Matterhorn time series
+- `scripts/plot_matterhorn_time.py` — outliers per month (bar chart) and outlier fraction heatmap (month × petal); loads Matterhorn outliers once
+
+### HTML reports
 - `scripts/make_dark_common_outliers_html.py` — generates `dark_common_outliers_loa_matterhorn.html`
 - `scripts/make_high_outlier_fibers_html.py` — generates `high_outlier_fibers_loa_matterhorn.html`
 - `scripts/make_mean_tiles_html.py` — generates `mean_tiles_loa_matterhorn.html`; 3 randomly sampled main-survey tiles per program for Loa and Matterhorn-only tiles (seed=42)
-- `scripts/vi_statistics_loa.py` — Clopper-Pearson VI fractions (bad/good/zwarn) per tile and aggregated by program, from `data/vi_tiles_loa.csv`
-- `scripts/zwarn_fraction_loa.py` — ZWARN≠0 fraction in full Loa main-survey outlier catalog, cross-matched against zcatalog; results by program with Clopper-Pearson intervals
+
+### VI and redshift quality
+- `scripts/vi_analysis_loa.py` — Clopper-Pearson VI fractions (bad/good/zwarn) per tile and aggregated, plus full-catalog ZWARN≠0 fractions from zcatalog cross-match
 
 ## Notebooks
 
