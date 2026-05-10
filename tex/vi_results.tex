@@ -1,0 +1,115 @@
+\section{Visual Inspection Results and Extrapolation}
+
+\subsection{VI sample}
+
+Visual inspection (VI) was carried out on the six tiles selected in
+Section~\ref{sec:vi_selection} — three dark and three bright — comprising
+a total of 391 outlier spectra (79 dark, 312 bright).
+For each spectrum the inspector recorded whether an identifiable spectroscopic
+problem was present, and whether the pipeline redshift quality flag was set
+($\texttt{ZWARN} \neq 0$).
+The per-tile results are given in Table~\ref{tab:vi_tiles}.
+
+\begin{table}[h]
+\centering
+\caption{Per-tile VI results. $N$ is the total number of outlier spectra inspected,
+$N_\mathrm{bad}$ the number with an identifiable VI problem,
+$N_\mathrm{good}$ the number with no VI problem,
+and $N_\mathrm{zw}$ the number with $\texttt{ZWARN}\neq 0$.}
+\label{tab:vi_tiles}
+\begin{tabular}{llrrrr}
+\hline
+Program & TILEID & $N$ & $N_\mathrm{bad}$ & $N_\mathrm{good}$ & $N_\mathrm{zw}$ \\
+\hline
+Dark   & 1406  &  10 &   5 &   5 &  1 \\
+Dark   & 3473  &  30 &  23 &   7 &  2 \\
+Dark   & 3833  &  39 &  35 &   4 & 10 \\
+\hline
+Bright & 25300 &  68 &  28 &  40 &  1 \\
+Bright & 22175 & 101 &  45 &  56 &  1 \\
+Bright & 22097 & 143 & 125 &  18 &  1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Aggregate VI fractions}
+
+We compute 95\% Clopper--Pearson confidence intervals for two quantities:
+the fraction of outliers with an identifiable VI problem ($f_\mathrm{bad}$)
+and the fraction with $\texttt{ZWARN}\neq 0$ ($f_\mathrm{zw}$).
+The Clopper--Pearson interval for $k$ events in $n$ trials at confidence level
+$1-\alpha$ is
+\begin{equation}
+    \left[
+        B\!\left(\tfrac{\alpha}{2};\,k,\,n-k+1\right),\;
+        B\!\left(1-\tfrac{\alpha}{2};\,k+1,\,n-k\right)
+    \right],
+\end{equation}
+where $B(p;\,a,\,b)$ denotes the $p$-th quantile of the Beta distribution.
+
+Summing over all tiles within each program the aggregated results are
+shown in Table~\ref{tab:vi_agg}.
+
+\begin{table}[h]
+\centering
+\caption{Aggregated VI fractions with 95\% Clopper--Pearson intervals.}
+\label{tab:vi_agg}
+\begin{tabular}{lrrrr}
+\hline
+Program & $N$ & $f_\mathrm{bad}$ [\%] & $N_\mathrm{good}$ & $f_\mathrm{zw}$ [\%] \\
+\hline
+Dark   &  79 & $79.7\ [69.2,\ 88.0]$ & 16  & $16.5\ [9.1,\ 26.5]$ \\
+Bright & 312 & $63.5\ [57.9,\ 68.8]$ & 114 & $1.0\ [0.2,\ 2.8]$   \\
+\hline
+All    & 391 & $66.8\ [61.8,\ 71.4]$ & 130 & $4.1\ [2.4,\ 6.6]$   \\
+\hline
+\end{tabular}
+\end{table}
+
+A striking result is that $\texttt{ZWARN}$ catches very few of the
+outliers identified by UMAP: only $4.1\%$ of all inspected spectra
+have $\texttt{ZWARN}\neq 0$, with the rate being particularly low
+in the bright program ($1.0\%$).
+This confirms that the UMAP outliers represent a population of
+spectroscopically problematic spectra that are largely invisible to
+the standard pipeline quality flag.
+
+\subsection{Extrapolation to the full Loa main survey}
+
+We extrapolate the VI good fractions ($1 - f_\mathrm{bad}$) measured
+in the sample to the full set of dark and bright main-survey outliers
+in Loa (191{,}411 dark and 463{,}543 bright spectra; see
+Table~\ref{tab:loa_summary}).
+The estimated number of outliers without an identifiable VI problem is
+\begin{equation}
+    \hat{N}_\mathrm{good} = (1 - \hat{f}_\mathrm{bad})\times N_\mathrm{total},
+\end{equation}
+where $\hat{f}_\mathrm{bad}$ is the sample fraction and the uncertainty
+is propagated through the Clopper--Pearson interval.
+The results are given in Table~\ref{tab:vi_extrap}.
+
+\begin{table}[h]
+\centering
+\caption{Estimated number of no-VI-problem outliers in the full Loa main survey,
+extrapolated from the VI sample fractions.
+Brackets give the 95\% Clopper--Pearson interval.}
+\label{tab:vi_extrap}
+\begin{tabular}{lrrr}
+\hline
+Program & Good fraction [\%] & $N_\mathrm{total}$ & $\hat{N}_\mathrm{good}$ \\
+\hline
+Dark   & $20.3\ [12.0,\ 30.8]$ & 191{,}411 & $38{,}767\ [23{,}051,\ 58{,}946]$ \\
+Bright & $36.5\ [31.2,\ 42.1]$ & 463{,}543 & $169{,}371\ [144{,}558,\ 195{,}382]$ \\
+\hline
+Combined & $33.2\ [28.6,\ 38.2]$ & 654{,}954 & $217{,}760\ [187{,}271,\ 249{,}924]$ \\
+\hline
+\end{tabular}
+\end{table}
+
+Combining both programs, we estimate that approximately
+$\mathbf{218{,}000}$ outliers in the Loa dark and bright main survey
+have no identifiable VI problem, with a 95\% confidence interval of
+$[187{,}000,\ 250{,}000]$.
+These spectra are genuine UMAP outliers that are not flagged by the
+standard pipeline and warrant further investigation.
+\end{document}
