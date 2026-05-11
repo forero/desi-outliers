@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HDBSCAN clusters — Loa batch 0006</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; max-width: 1100px; }
+    h1   { font-size: 1.4em; }
+    h2   { font-size: 1.1em; margin-top: 2em; border-bottom: 1px solid #ccc;
+            padding-bottom: 4px; }
+    .centre { color: #666; font-weight: normal; font-size: 0.9em; }
+    .all-link { margin-bottom: 1em; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 0.5em; }
+    th, td { border: 1px solid #ccc; padding: 5px 8px; text-align: left; font-size: 0.9em; }
+    th { background: #f0f0f0; }
+    tr:nth-child(even) { background: #fafafa; }
+    a { color: #0066cc; }
+    .cluster { margin-bottom: 1.5em; }
+    .noise-section { border-top: 2px solid #999; padding-top: 0.5em; }
+  </style>
+</head>
+<body>
+  <h1>HDBSCAN clusters — Loa batch 0006 (6 clusters, 44,639 spectra, sorted by size)</h1>
+  <p class="all-link">
+    <a href="https://inspector.desi.lbl.gov/loa/spectra/39627561382185931,39627496504691795,39633342391389497,39633067354097028,39627415525263451,39627833529601134,39627777946686817,39633424226453912,39633344979273387,39628378336138783,39627800549788107,39627490888518757,39627854945715887,39627455870275523,39628176749501145,39627697038561985,39633001780351067,39627718089769190,39628134999395000,2389507462660099,39627843201667305,39633399647834230,39628173159172516,39633293489995935,39627679695110691,39628046486995571,39628267153524344,39633153509295599,39633258899575260,39628186807438723,39627667179310881,39628523048013262,39628379854475362,39627594290694063,39627874608616949,39633049398282692,39627929478499842,39628034218657195,39627769696486594,39628029516842749,39633071758117485,39628373516879223,39632945484400472,39627818006483267,39627730341333701,39633149608593383,39627837149287225,39627784967948930,39628492278596596,39627754492133501,39627742672588220,39633341779017803,39632931186017710,39633364927384685,39627909039657038,39628153110399262,39627769679710780,39627556525179721,39628011187736880,39627758120211156" target="_blank">&#9654; View all 60 representative spectra in the inspector</a>
+  </p>
+  <p>For each cluster: the 10 spectra closest to the centre of mass in UMAP space.</p>
+
+  <div class="cluster">
+    <h2>Cluster 4 &mdash; 27,693 spectra &nbsp;
+      <span class="centre">(centre: -1.78, 3.72)</span>
+      &nbsp;<a href="https://inspector.desi.lbl.gov/loa/spectra/39627561382185931,39627496504691795,39633342391389497,39633067354097028,39627415525263451,39627833529601134,39627777946686817,39633424226453912,39633344979273387,39628378336138783" target="_blank">[view 10 in inspector]</a>
+    </h2>
+    <table>
+      <thead>
+        <tr><th>TARGETID</th><th>TILEID</th><th>FIBER</th><th>NIGHT</th><th>Inspector</th></tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>39627561382185931</td>
+            <td>23440</td>
+            <td>2827</td>
+            <td>20230806</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23440/2827" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627496504691795</td>
+            <td>7785</td>
+            <td>4999</td>
+            <td>20211029</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/7785/4999" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633342391389497</td>
+            <td>23734</td>
+            <td>3162</td>
+            <td>20230107</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23734/3162" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633067354097028</td>
+            <td>21958</td>
+            <td>639</td>
+            <td>20220219</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/21958/639" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627415525263451</td>
+            <td>22991</td>
+            <td>3153</td>
+            <td>20230212</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/22991/3153" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627833529601134</td>
+            <td>23853</td>
+            <td>4648</td>
+            <td>20230826</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23853/4648" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627777946686817</td>
+            <td>25536</td>
+            <td>1194</td>
+            <td>20210926</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/25536/1194" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633424226453912</td>
+            <td>26035</td>
+            <td>2538</td>
+            <td>20230108</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/26035/2538" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633344979273387</td>
+            <td>26294</td>
+            <td>4827</td>
+            <td>20231123</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/26294/4827" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628378336138783</td>
+            <td>11789</td>
+            <td>3340</td>
+            <td>20240214</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/11789/3340" target="_blank">inspector</a></td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cluster">
+    <h2>Cluster 1 &mdash; 2,044 spectra &nbsp;
+      <span class="centre">(centre: 4.21, 3.17)</span>
+      &nbsp;<a href="https://inspector.desi.lbl.gov/loa/spectra/39627800549788107,39627490888518757,39627854945715887,39627455870275523,39628176749501145,39627697038561985,39633001780351067,39627718089769190,39628134999395000,2389507462660099" target="_blank">[view 10 in inspector]</a>
+    </h2>
+    <table>
+      <thead>
+        <tr><th>TARGETID</th><th>TILEID</th><th>FIBER</th><th>NIGHT</th><th>Inspector</th></tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>39627800549788107</td>
+            <td>8915</td>
+            <td>2048</td>
+            <td>20220228</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/8915/2048" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627490888518757</td>
+            <td>2734</td>
+            <td>1870</td>
+            <td>20231019</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/2734/1870" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627854945715887</td>
+            <td>23237</td>
+            <td>1647</td>
+            <td>20220413</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23237/1647" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627455870275523</td>
+            <td>8973</td>
+            <td>4801</td>
+            <td>20211029</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/8973/4801" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628176749501145</td>
+            <td>4535</td>
+            <td>4712</td>
+            <td>20230609</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/4535/4712" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627697038561985</td>
+            <td>2842</td>
+            <td>4673</td>
+            <td>20211212</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/2842/4673" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633001780351067</td>
+            <td>9683</td>
+            <td>4042</td>
+            <td>20230618</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/9683/4042" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627718089769190</td>
+            <td>6237</td>
+            <td>567</td>
+            <td>20221030</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/6237/567" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628134999395000</td>
+            <td>2087</td>
+            <td>4371</td>
+            <td>20230513</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/2087/4371" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>2389507462660099</td>
+            <td>26284</td>
+            <td>4766</td>
+            <td>20221114</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/26284/4766" target="_blank">inspector</a></td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cluster">
+    <h2>Cluster 0 &mdash; 956 spectra &nbsp;
+      <span class="centre">(centre: -7.11, 1.01)</span>
+      &nbsp;<a href="https://inspector.desi.lbl.gov/loa/spectra/39627843201667305,39633399647834230,39628173159172516,39633293489995935,39627679695110691,39628046486995571,39628267153524344,39633153509295599,39633258899575260,39628186807438723" target="_blank">[view 10 in inspector]</a>
+    </h2>
+    <table>
+      <thead>
+        <tr><th>TARGETID</th><th>TILEID</th><th>FIBER</th><th>NIGHT</th><th>Inspector</th></tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>39627843201667305</td>
+            <td>25119</td>
+            <td>466</td>
+            <td>20220312</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/25119/466" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633399647834230</td>
+            <td>25454</td>
+            <td>3307</td>
+            <td>20230601</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/25454/3307" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628173159172516</td>
+            <td>20564</td>
+            <td>3400</td>
+            <td>20231231</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/20564/3400" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633293489995935</td>
+            <td>23787</td>
+            <td>4912</td>
+            <td>20220512</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23787/4912" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627679695110691</td>
+            <td>21657</td>
+            <td>357</td>
+            <td>20220314</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/21657/357" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628046486995571</td>
+            <td>24196</td>
+            <td>357</td>
+            <td>20230108</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/24196/357" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628267153524344</td>
+            <td>23628</td>
+            <td>4089</td>
+            <td>20230406</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23628/4089" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633153509295599</td>
+            <td>24318</td>
+            <td>2130</td>
+            <td>20230402</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/24318/2130" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633258899575260</td>
+            <td>24071</td>
+            <td>1028</td>
+            <td>20211021</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/24071/1028" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628186807438723</td>
+            <td>25197</td>
+            <td>2773</td>
+            <td>20230202</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/25197/2773" target="_blank">inspector</a></td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cluster">
+    <h2>Cluster 2 &mdash; 669 spectra &nbsp;
+      <span class="centre">(centre: 2.59, -0.12)</span>
+      &nbsp;<a href="https://inspector.desi.lbl.gov/loa/spectra/39627667179310881,39628523048013262,39628379854475362,39627594290694063,39627874608616949,39633049398282692,39627929478499842,39628034218657195,39627769696486594,39628029516842749" target="_blank">[view 10 in inspector]</a>
+    </h2>
+    <table>
+      <thead>
+        <tr><th>TARGETID</th><th>TILEID</th><th>FIBER</th><th>NIGHT</th><th>Inspector</th></tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>39627667179310881</td>
+            <td>11506</td>
+            <td>26</td>
+            <td>20220407</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/11506/26" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628523048013262</td>
+            <td>23382</td>
+            <td>5</td>
+            <td>20220522</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23382/5" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628379854475362</td>
+            <td>21819</td>
+            <td>472</td>
+            <td>20230520</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/21819/472" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627594290694063</td>
+            <td>11926</td>
+            <td>10</td>
+            <td>20220228</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/11926/10" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627874608616949</td>
+            <td>3388</td>
+            <td>23</td>
+            <td>20220916</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/3388/23" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633049398282692</td>
+            <td>4923</td>
+            <td>2251</td>
+            <td>20230423</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/4923/2251" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627929478499842</td>
+            <td>5361</td>
+            <td>499</td>
+            <td>20230915</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/5361/499" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628034218657195</td>
+            <td>9278</td>
+            <td>4876</td>
+            <td>20230328</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/9278/4876" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627769696486594</td>
+            <td>56</td>
+            <td>4811</td>
+            <td>20210407</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/56/4811" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628029516842749</td>
+            <td>9207</td>
+            <td>4730</td>
+            <td>20230617</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/9207/4730" target="_blank">inspector</a></td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cluster">
+    <h2>Cluster 5 &mdash; 341 spectra &nbsp;
+      <span class="centre">(centre: 1.18, -2.13)</span>
+      &nbsp;<a href="https://inspector.desi.lbl.gov/loa/spectra/39633071758117485,39628373516879223,39632945484400472,39627818006483267,39627730341333701,39633149608593383,39627837149287225,39627784967948930,39628492278596596,39627754492133501" target="_blank">[view 10 in inspector]</a>
+    </h2>
+    <table>
+      <thead>
+        <tr><th>TARGETID</th><th>TILEID</th><th>FIBER</th><th>NIGHT</th><th>Inspector</th></tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>39633071758117485</td>
+            <td>11335</td>
+            <td>3429</td>
+            <td>20240118</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/11335/3429" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628373516879223</td>
+            <td>3655</td>
+            <td>436</td>
+            <td>20240115</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/3655/436" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39632945484400472</td>
+            <td>23471</td>
+            <td>1547</td>
+            <td>20240317</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23471/1547" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627818006483267</td>
+            <td>55</td>
+            <td>3291</td>
+            <td>20210406</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/55/3291" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627730341333701</td>
+            <td>7809</td>
+            <td>869</td>
+            <td>20230824</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/7809/869" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633149608593383</td>
+            <td>571</td>
+            <td>3554</td>
+            <td>20210503</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/571/3554" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627837149287225</td>
+            <td>4394</td>
+            <td>215</td>
+            <td>20220525</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/4394/215" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627784967948930</td>
+            <td>21739</td>
+            <td>1747</td>
+            <td>20210927</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/21739/1747" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628492278596596</td>
+            <td>1928</td>
+            <td>4355</td>
+            <td>20210521</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/1928/4355" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627754492133501</td>
+            <td>10931</td>
+            <td>4327</td>
+            <td>20221001</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/10931/4327" target="_blank">inspector</a></td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cluster">
+    <h2>Cluster 3 &mdash; 305 spectra &nbsp;
+      <span class="centre">(centre: -1.27, -2.67)</span>
+      &nbsp;<a href="https://inspector.desi.lbl.gov/loa/spectra/39627742672588220,39633341779017803,39632931186017710,39633364927384685,39627909039657038,39628153110399262,39627769679710780,39627556525179721,39628011187736880,39627758120211156" target="_blank">[view 10 in inspector]</a>
+    </h2>
+    <table>
+      <thead>
+        <tr><th>TARGETID</th><th>TILEID</th><th>FIBER</th><th>NIGHT</th><th>Inspector</th></tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>39627742672588220</td>
+            <td>2716</td>
+            <td>3106</td>
+            <td>20221028</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/2716/3106" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633341779017803</td>
+            <td>11361</td>
+            <td>2447</td>
+            <td>20240213</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/11361/2447" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39632931186017710</td>
+            <td>2816</td>
+            <td>2908</td>
+            <td>20220604</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/2816/2908" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633364927384685</td>
+            <td>5473</td>
+            <td>4136</td>
+            <td>20220220</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/5473/4136" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627909039657038</td>
+            <td>5815</td>
+            <td>4570</td>
+            <td>20220606</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/5815/4570" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628153110399262</td>
+            <td>20219</td>
+            <td>1256</td>
+            <td>20210628</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/20219/1256" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627769679710780</td>
+            <td>62</td>
+            <td>289</td>
+            <td>20210504</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/62/289" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627556525179721</td>
+            <td>5872</td>
+            <td>2280</td>
+            <td>20211203</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/5872/2280" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628011187736880</td>
+            <td>5825</td>
+            <td>4429</td>
+            <td>20230515</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/5825/4429" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627758120211156</td>
+            <td>513</td>
+            <td>4396</td>
+            <td>20210505</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/513/4396" target="_blank">inspector</a></td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cluster noise-section">
+    <h2>Noise (unassigned) &mdash; 12,631 spectra &nbsp;
+      <span class="centre">(not assigned to any cluster)</span>
+      &nbsp;<a href="https://inspector.desi.lbl.gov/loa/spectra/39633182731011696,39628492282793950,39627770229165209,39627537529179685,39627775639817003,2305843043074355334,39633208999938143,39627683155415814,39627473578629395,39627544923739107" target="_blank">[view 10 in inspector]</a>
+    </h2>
+    <table>
+      <thead>
+        <tr><th>TARGETID</th><th>TILEID</th><th>FIBER</th><th>NIGHT</th><th>Inspector</th></tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>39633182731011696</td>
+            <td>1945</td>
+            <td>4980</td>
+            <td>20240118</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/1945/4980" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39628492282793950</td>
+            <td>1928</td>
+            <td>4450</td>
+            <td>20210521</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/1928/4450" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627770229165209</td>
+            <td>222</td>
+            <td>1405</td>
+            <td>20210416</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/222/1405" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627537529179685</td>
+            <td>20296</td>
+            <td>3231</td>
+            <td>20220914</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/20296/3231" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627775639817003</td>
+            <td>42</td>
+            <td>1062</td>
+            <td>20210412</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/42/1062" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>2305843043074355334</td>
+            <td>41012</td>
+            <td>466</td>
+            <td>20230504</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/41012/466" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39633208999938143</td>
+            <td>23889</td>
+            <td>1807</td>
+            <td>20230528</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23889/1807" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627683155415814</td>
+            <td>23053</td>
+            <td>2334</td>
+            <td>20220204</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/23053/2334" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627473578629395</td>
+            <td>10549</td>
+            <td>778</td>
+            <td>20221222</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/10549/778" target="_blank">inspector</a></td>
+          </tr>
+          <tr>
+            <td>39627544923739107</td>
+            <td>22260</td>
+            <td>1657</td>
+            <td>20231120</td>
+            <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/22260/1657" target="_blank">inspector</a></td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
