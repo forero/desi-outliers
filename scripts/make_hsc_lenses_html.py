@@ -3,32 +3,37 @@ For each HSC lens candidate found in the Loa UMAP batches, show the lens
 spectrum and its 10 closest UMAP neighbours within the same HDBSCAN cluster.
 
 Inputs:
-  data/hsc_lenses_batch01.csv            — 47 HSC lens TARGETIDs
+  outlier_lenses_catalog.fits            — 67 IS_HSC=True lens TARGETIDs
   data/cluster_labels_loa_{tag}.npy      — HDBSCAN labels per batch
   Loa UMAP NPZ batches
 
 Outputs:
-  data/hsc_lenses_loa_matches.csv        — 18-row match table
+  data/hsc_lenses_loa_matches.csv        — match table (all HSC in Loa batches)
   html/hsc_lenses_loa.html               — HTML report
 """
 import numpy as np
 import pandas as pd
 import pathlib
 import shutil
+import fitsio
 
-BATCH_DIR = pathlib.Path("/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/outlier_umap_batches")
-SPECPROD  = "loa"
-BASE_URL  = f"https://inspector.desi.lbl.gov/{SPECPROD}/spectra"
-N_NEIGH   = 10
-CFS_DIR   = pathlib.Path("/global/cfs/cdirs/desi/users/forero/outliers")
+BATCH_DIR   = pathlib.Path("/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/outlier_umap_batches")
+LENS_FITS   = pathlib.Path("/pscratch/sd/v/vtorresg/desi-lenses/rapids_10_batches/outlier_lenses_catalog.fits")
+SPECPROD    = "loa"
+BASE_URL    = f"https://inspector.desi.lbl.gov/{SPECPROD}/spectra"
+N_NEIGH     = 10
+CFS_DIR     = pathlib.Path("/global/cfs/cdirs/desi/users/forero/outliers")
 
 pathlib.Path("html").mkdir(exist_ok=True)
 CFS_DIR.mkdir(parents=True, exist_ok=True)
 
-# ── load HSC lens TARGETIDs ───────────────────────────────────────────────────
-hsc      = pd.read_csv("data/hsc_lenses_batch01.csv")
-hsc_ids  = set(hsc["TARGETID"].astype(int))
-hsc_tile = {int(r.TARGETID): (int(r.TILE), int(r.FIBER)) for r in hsc.itertuples()}
+# ── load all IS_HSC=True lenses ───────────────────────────────────────────────
+lens_cat = fitsio.read(str(LENS_FITS))
+hsc_mask = lens_cat["IS_HSC"].astype(bool)
+hsc_cat  = lens_cat[hsc_mask]
+hsc_ids  = set(hsc_cat["TARGETID"].astype(int))
+hsc_tile = {int(r["TARGETID"]): (int(r["TILE"]), int(r["FIBER"])) for r in hsc_cat}
+print(f"IS_HSC targets in lens catalog: {len(hsc_ids)}")
 
 # ── find lenses in each Loa batch and collect neighbours ─────────────────────
 matches  = []   # rows for the CSV
@@ -175,7 +180,7 @@ html = f"""<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <h1>HSC lens candidates found in Loa UMAP batches ({len(matches)} of 47)</h1>
+  <h1>HSC lens candidates found in Loa UMAP batches ({len(matches)} of {len(hsc_ids)})</h1>
   <p>
     For each lens: inspector link for the lens alone and combined with its
     {N_NEIGH} closest UMAP neighbours within the same HDBSCAN cluster.
