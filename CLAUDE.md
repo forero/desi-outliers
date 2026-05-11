@@ -117,6 +117,18 @@ Visual inspection of 6 randomly selected main-survey tiles (3 dark, 3 bright); r
 | Dark+Bright | 654,954 | 38,913 | 5.94% [5.88%, 6.00%] |
 | All | 1,004,881 | 39,332 | 3.91% [3.88%, 3.95%] |
 
+## UMAP embedding batches (Loa)
+
+NPZ files at `/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/outlier_umap_batches/`.
+11 batches (`outlier_umap_batch_0001.npz` – `_0011.npz`), each with 100,000 spectra; 1,100,000 total covering the full ~1.1M Loa outlier catalog. Same array schema as Matterhorn batches. HDBSCAN yields ~126 clusters and ~7–8% noise per batch.
+
+Outputs per batch (tag = 0001 … 0011):
+- `data/cluster_labels_loa_{tag}.npy` — HDBSCAN labels (−1 = noise)
+- `data/cluster_representatives_loa_{tag}.csv` — 1 rep per cluster (CoM-closest)
+- `plots/dbscan_umap_loa_{tag}.png` — UMAP scatter coloured by cluster
+- `html/all_clusters_loa_{tag}.html` — all clusters sorted by size; top link shows 1 rep per cluster; each section shows 10 CoM-closest spectra; noise section at bottom
+- `html/img/dbscan_umap_loa_{tag}.png` — PNG copy so local HTML renders the image
+
 ## UMAP embedding batches (Matterhorn)
 
 NPZ files at `/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/outlier_umap_batches_test/`.
@@ -150,6 +162,7 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 - `html/cluster_representatives_matterhorn.html` — sortable table: 1 representative spectrum per HDBSCAN cluster (closest to CoM), with inspector links
 - `html/largest_cluster_matterhorn.html` — 10 spectra closest to CoM of the largest cluster
 - `html/all_clusters_matterhorn.html` — all 126 clusters sorted by size; 10 CoM-closest spectra each; plus 10 randomly sampled noise spectra (seed=42) in a separate section at the bottom
+- `html/all_clusters_loa_{0001…0011}.html` — one file per Loa batch; same format as Matterhorn; top link = 1 rep per cluster (~126 targetids); UMAP scatter PNG embedded from `html/img/`
 
 ## Scripts
 
@@ -178,6 +191,7 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 
 ### Clustering
 - `scripts/dbscan_umap_batch.py` — runs HDBSCAN on a UMAP NPZ batch; saves `data/cluster_labels.npy` and `data/cluster_representatives.csv`; produces `plots/dbscan_umap_batch.png`
+- `scripts/process_loa_batches.py` — runs HDBSCAN on all 11 Loa UMAP batches; saves per-batch labels/reps/PNG/HTML; skips batches with permission errors; copies HTML+PNG to CFS and `html/img/`
 
 ### VI and redshift quality
 - `scripts/vi_analysis_loa.py` — Clopper-Pearson VI fractions (bad/good/zwarn) per tile and aggregated, plus full-catalog ZWARN≠0 fractions from zcatalog cross-match

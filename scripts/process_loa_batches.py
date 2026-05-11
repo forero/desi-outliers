@@ -8,6 +8,7 @@ For each batch produces:
 """
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 import pathlib, shutil
 from sklearn.cluster import HDBSCAN
 
@@ -19,10 +20,15 @@ MIN_SAMPLES      = 50
 N_SAMPLE         = 10
 RNG_SEED         = 42
 CFS_DIR          = pathlib.Path("/global/cfs/cdirs/desi/users/forero/outliers")
+CFS_IMG_DIR      = CFS_DIR / "img"
 
 pathlib.Path("data").mkdir(exist_ok=True)
 pathlib.Path("html").mkdir(exist_ok=True)
+pathlib.Path("plots").mkdir(exist_ok=True)
+HTML_IMG_DIR = pathlib.Path("html/img")
+HTML_IMG_DIR.mkdir(exist_ok=True)
 CFS_DIR.mkdir(parents=True, exist_ok=True)
+CFS_IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 batch_files = sorted(BATCH_DIR.glob("outlier_umap_batch_????.npz"))
 
@@ -32,7 +38,11 @@ for npz_path in batch_files:
     print(f"Batch {tag}: {npz_path.name}")
     print(f"{'='*60}")
 
-    f   = np.load(npz_path)
+    try:
+        f = np.load(npz_path)
+    except PermissionError:
+        print(f"  SKIPPED — permission denied")
+        continue
     emb = f["embedding"]
     print(f"  {len(emb):,} points")
 
@@ -70,12 +80,45 @@ for npz_path in batch_files:
     pd.DataFrame(reps).to_csv(csv_path, index=False)
     print(f"  Saved {labels_path}  {csv_path}")
 
+    # ── diagnostic scatter plot ────────────────────────────────────────────────
+    fig, ax = plt.subplots(figsize=(10, 8))
+    noise_mask = labels == -1
+    ax.scatter(emb[noise_mask, 0], emb[noise_mask, 1],
+               s=0.3, c="lightgrey", alpha=0.3, rasterized=True,
+               label=f"Noise ({n_noise:,})")
+    cmap = plt.cm.tab20
+    for r in reps:
+        mask  = labels == r["cluster"]
+        color = cmap(r["cluster"] % 20)
+        ax.scatter(emb[mask, 0], emb[mask, 1],
+                   s=0.5, color=color, alpha=0.5, rasterized=True)
+        ax.scatter(r["cx"], r["cy"], marker="*", s=120,
+                   color=color, edgecolors="k", linewidths=0.5, zorder=5)
+        ax.text(r["cx"], r["cy"] + 0.3, str(r["cluster"]),
+                fontsize=7, ha="center", va="bottom",
+                bbox=dict(boxstyle="round,pad=0.1", facecolor="white", alpha=0.6, linewidth=0))
+    ax.set_xlabel("UMAP 1")
+    ax.set_ylabel("UMAP 2")
+    ax.set_title(f"HDBSCAN — Loa batch {tag}  |  {n_clusters} clusters  |  "
+                 f"min_cluster_size={MIN_CLUSTER_SIZE}  min_samples={MIN_SAMPLES}\n"
+                 f"{len(emb):,} points, {n_noise:,} noise ({100*n_noise/len(labels):.1f}%)")
+    ax.legend(markerscale=6, loc="upper right", fontsize=8)
+    plot_path = f"plots/dbscan_umap_loa_{tag}.png"
+    fig.savefig(plot_path, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    shutil.copy(plot_path, CFS_IMG_DIR / pathlib.Path(plot_path).name)
+    shutil.copy(plot_path, HTML_IMG_DIR / pathlib.Path(plot_path).name)
+    print(f"  Saved {plot_path}  →  CFS/img/  html/img/")
+
     # ── HTML ──────────────────────────────────────────────────────────────────
     order  = np.argsort(-counts)
     unique = unique[order]
     counts = counts[order]
 
-    all_section_targetids = []
+    # 1 representative targetid per cluster (CoM-closest), in size-descending order
+    rep_targetid = {r["cluster"]: r["targetid"] for r in reps}
+    rep_link_targetids = [str(rep_targetid[cid]) for cid in unique]
+
     sections_html = ""
 
     for cid, size in zip(unique, counts):
@@ -88,8 +131,6 @@ for npz_path in batch_files:
         tileids   = [int(f["tileids"][i])   for i in top10]
         fibers    = [int(f["fibers"][i])    for i in top10]
         nights    = [int(f["nights"][i])    for i in top10]
-
-        all_section_targetids.extend(str(t) for t in targetids)
 
         cluster_url = f"{BASE_URL}/" + ",".join(str(t) for t in targetids)
 
@@ -159,8 +200,8 @@ for npz_path in batch_files:
     </table>
   </div>"""
 
-    all_url = f"{BASE_URL}/" + ",".join(all_section_targetids)
-    n_total = len(all_section_targetids)
+    all_url = f"{BASE_URL}/" + ",".join(rep_link_targetids)
+    n_total = len(rep_link_targetids)
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -189,6 +230,11 @@ for npz_path in batch_files:
     <a href="{all_url}" target="_blank">&#9654; View all {n_total} representative spectra in the inspector</a>
   </p>
   <p>For each cluster: the {N_SAMPLE} spectra closest to the centre of mass in UMAP space.</p>
+  <div style="margin-bottom:2em;">
+    <img src="img/dbscan_umap_loa_{tag}.png"
+         alt="UMAP scatter plot batch {tag}"
+         style="max-width:100%; border:1px solid #ccc;">
+  </div>
 {sections_html}
 {noise_html}
 </body>
