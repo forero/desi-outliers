@@ -120,7 +120,7 @@ Visual inspection of 6 randomly selected main-survey tiles (3 dark, 3 bright); r
 ## UMAP embedding batches (Matterhorn)
 
 NPZ files at `/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/outlier_umap_batches_test/`.
-Batch `outlier_umap_batch_0001.npz` has 100,000 spectra. Key arrays (all length 100,000):
+Batch `outlier_umap_batch_0001.npz` has 100,000 spectra — a subset of the full ~2.2M Matterhorn outlier catalog; most individual (tileid, fiber) pairs from the full catalog will not be present. Key arrays (all length 100,000):
 
 | Key | Description |
 |-----|-------------|
