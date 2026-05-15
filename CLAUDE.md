@@ -11,6 +11,17 @@ Repo for making plots of DESI spectroscopic outliers identified via UMAP analysi
 
 Both files share the same schema: `TARGETID, TILEID, FIBER`.
 
+## DR1 LAE catalog
+
+`DR1_LAE_submitted_version.fits` (in repo root, **gitignored**) — 19,685 Lyman-Alpha Emitter candidates from DESI DR1.
+
+Key columns: `TARGETID`, `Z_LYA`, `PROB`, `OII_SNR`, `OII_FLUX`, `TARGET_RA`, `TARGET_DEC`, `FLUX_G/R/Z`.
+
+Cross-match with outlier catalogs:
+- **229** LAEs in Loa outliers (1.16%)
+- **298** LAEs in Matterhorn outliers (1.51%)
+- **34** in both productions (persistently flagged)
+
 ## SPECPROD tile summaries
 
 | Production | Tiles CSV | Tiles FITS |
@@ -131,8 +142,8 @@ Outputs per batch (tag = 0001 … 0011):
 
 ## UMAP embedding batches (Matterhorn)
 
-NPZ files at `/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/outlier_umap_batches_test/`.
-Batch `outlier_umap_batch_0001.npz` has 100,000 spectra — a subset of the full ~2.2M Matterhorn outlier catalog; most individual (tileid, fiber) pairs from the full catalog will not be present. Key arrays (all length 100,000):
+NPZ files at `/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/outlier_umap_batches/`.
+**22 batches** (`outlier_umap_batch_0001.npz` – `_0022.npz`), covering **2,100,380 spectra** (near-complete ~2.2M catalog). A `summary.npz` metadata file is also present. HDBSCAN cluster labels exist only for batch 0001 (`data/cluster_labels.npy`). Key arrays (all length ~100,000 per batch):
 
 | Key | Description |
 |-----|-------------|
@@ -163,6 +174,11 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 - `html/largest_cluster_matterhorn.html` — 10 spectra closest to CoM of the largest cluster
 - `html/all_clusters_matterhorn.html` — all 126 clusters sorted by size; 10 CoM-closest spectra each; plus 10 randomly sampled noise spectra (seed=42) in a separate section at the bottom
 - `html/all_clusters_loa_{0001…0011}.html` — one file per Loa batch; same format as Matterhorn; top link = 1 rep per cluster (~126 targetids); UMAP scatter PNG embedded from `html/img/`
+- `html/lae_outliers_loa_matterhorn.html` — 34 LAEs that are UMAP outliers in both Loa and Matterhorn; sortable table with inspector links for both productions
+- `html/lae_outliers_loa_only.html` — 195 LAEs that are outliers in Loa only; groups of 20 with per-group inspector links
+- `html/lae_outliers_matterhorn_only.html` — 264 LAEs that are outliers in Matterhorn only; groups of 20 with per-group inspector links
+- `html/lae_neighbors_loa.html` — 230 LAE occurrences in Loa batches; for each: 10 closest UMAP neighbours within the same HDBSCAN cluster; sorted by Z_LYA
+- `html/lae_neighbors_matterhorn.html` — 298 LAE occurrences in Matterhorn batches; neighbours from same cluster (batch 0001) or full batch (batches 0002–0022)
 
 ## Scripts
 
@@ -180,6 +196,11 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 
 ### Matterhorn time series
 - `scripts/plot_matterhorn_time.py` — outliers per month (bar chart) and outlier fraction heatmap (month × petal); loads Matterhorn outliers once
+
+### LAE cross-match
+- `scripts/make_lae_outliers_html.py` — generates `lae_outliers_loa_matterhorn.html`; 34 LAEs in both productions; inputs: `DR1_LAE_submitted_version.fits` + both outlier CSVs
+- `scripts/make_lae_groups_html.py` — generates `lae_outliers_loa_only.html` (195) and `lae_outliers_matterhorn_only.html` (264); groups of 20 with inspector links
+- `scripts/make_lae_neighbors_html.py` — generates `lae_neighbors_loa.html` and `lae_neighbors_matterhorn.html`; 10 closest UMAP neighbours per LAE found in each batch
 
 ### HTML reports
 - `scripts/make_dark_common_outliers_html.py` — generates `dark_common_outliers_loa_matterhorn.html`

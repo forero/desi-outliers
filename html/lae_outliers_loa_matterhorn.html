@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LAE outliers in both Loa and Matterhorn</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; max-width: 1400px; }
+    h1   { font-size: 1.4em; }
+    p    { margin: 0.4em 0; }
+    .all-links { margin-bottom: 1em; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+    th { background: #f0f0f0; cursor: pointer; user-select: none; }
+    th:hover { background: #ddd; }
+    tr:nth-child(even) { background: #fafafa; }
+    a { color: #0066cc; }
+  </style>
+  <script>
+    function sortTable(col) {
+      const table = document.getElementById('tbl');
+      const rows  = Array.from(table.tBodies[0].rows);
+      const asc   = table.dataset.sortCol == col && table.dataset.sortDir == 'asc';
+      rows.sort((a, b) => {
+        const va = a.cells[col].innerText;
+        const vb = b.cells[col].innerText;
+        const na = parseFloat(va.replace('—','NaN')), nb = parseFloat(vb.replace('—','NaN'));
+        const cmp = isNaN(na) ? va.localeCompare(vb) : na - nb;
+        return asc ? -cmp : cmp;
+      });
+      rows.forEach(r => table.tBodies[0].appendChild(r));
+      table.dataset.sortCol = col;
+      table.dataset.sortDir = asc ? 'desc' : 'asc';
+    }
+  </script>
+</head>
+<body>
+  <h1>LAE outliers in both Loa and Matterhorn (34 targets)</h1>
+  <p>
+    These 34 targets appear in the DR1 LAE catalog
+    (<em>DR1_LAE_submitted_version.fits</em>) and are flagged as UMAP outliers
+    in <strong>both</strong> the Loa and Matterhorn spectroscopic productions.
+    Table is sorted by Lya redshift. Click column headers to re-sort.
+  </p>
+  <div class="all-links">
+    <a href="https://inspector.desi.lbl.gov/loa/spectra/39632976388030584,39628364872421243,39628428160273054,39632930535900033,39628460167006696,39627689123908675,39627791079055544,39627673537871919,39627824050474954,39627871420941041,39628206742962750,39627897043945635,39627468235083088,39627897442406748,39628289781794118,39627694916241662,39627932473230643,39628495508212103,39627824247603969,39633095242025743,39627769507744597,39627812419667552,39628195137326793,39627932942993832,39628301035112999,39633117232762787,39627757432341021,39627733923267726,39628210991794875,39633082617168090,39627743289147914,39627749324754929,39632971883349729,39627817930986078" target="_blank">&#9654; View all 34 in Loa inspector</a>
+    &nbsp;|&nbsp;
+    <a href="https://inspector.desi.lbl.gov/matterhorn/spectra/39632976388030584,39628364872421243,39628428160273054,39632930535900033,39628460167006696,39627689123908675,39627791079055544,39627673537871919,39627824050474954,39627871420941041,39628206742962750,39627897043945635,39627468235083088,39627897442406748,39628289781794118,39627694916241662,39627932473230643,39628495508212103,39627824247603969,39633095242025743,39627769507744597,39627812419667552,39628195137326793,39627932942993832,39628301035112999,39633117232762787,39627757432341021,39627733923267726,39628210991794875,39633082617168090,39627743289147914,39627749324754929,39632971883349729,39627817930986078" target="_blank">&#9654; View all 34 in Matterhorn inspector</a>
+  </div>
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">TARGETID</th>
+        <th onclick="sortTable(1)">RA</th>
+        <th onclick="sortTable(2)">Dec</th>
+        <th onclick="sortTable(3)">Z_LYA</th>
+        <th onclick="sortTable(4)">PROB</th>
+        <th onclick="sortTable(5)">OII_SNR</th>
+        <th onclick="sortTable(6)">Loa TILEID</th>
+        <th onclick="sortTable(7)">Loa FIBER</th>
+        <th onclick="sortTable(8)">MTH TILEID</th>
+        <th onclick="sortTable(9)">MTH FIBER</th>
+        <th>Inspector (Loa)</th>
+        <th>Inspector (MTH)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>39632976388030584</td>
+        <td>216.73707</td>
+        <td>34.74796</td>
+        <td>1.9853</td>
+        <td>0.947</td>
+        <td>2.19</td>
+        <td>190</td>
+        <td>1939</td>
+        <td>190</td>
+        <td>1939</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/190/1939" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/190/1939" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39628364872421240</td>
+        <td>339.58973</td>
+        <td>24.41165</td>
+        <td>1.9860</td>
+        <td>0.998</td>
+        <td>—</td>
+        <td>8540</td>
+        <td>1636</td>
+        <td>101186</td>
+        <td>2526</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/8540/1636" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/101186/2526" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39628428160273056</td>
+        <td>211.64146</td>
+        <td>27.43218</td>
+        <td>2.0170</td>
+        <td>0.984</td>
+        <td>2.40</td>
+        <td>3762</td>
+        <td>3963</td>
+        <td>3762</td>
+        <td>3963</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/3762/3963" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/3762/3963" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39632930535900032</td>
+        <td>181.55569</td>
+        <td>32.60798</td>
+        <td>2.0190</td>
+        <td>0.997</td>
+        <td>—</td>
+        <td>11051</td>
+        <td>3971</td>
+        <td>11051</td>
+        <td>3971</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/11051/3971" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/11051/3971" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39628460167006696</td>
+        <td>214.39848</td>
+        <td>29.02212</td>
+        <td>2.0341</td>
+        <td>1.000</td>
+        <td>—</td>
+        <td>10011</td>
+        <td>549</td>
+        <td>10011</td>
+        <td>549</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/10011/549" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/10011/549" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627689123908672</td>
+        <td>59.72823</td>
+        <td>-3.93257</td>
+        <td>2.0862</td>
+        <td>0.997</td>
+        <td>—</td>
+        <td>2507</td>
+        <td>4553</td>
+        <td>2507</td>
+        <td>4553</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/2507/4553" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/2507/4553" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627791079055544</td>
+        <td>18.74511</td>
+        <td>0.28777</td>
+        <td>2.1251</td>
+        <td>1.000</td>
+        <td>-0.89</td>
+        <td>2750</td>
+        <td>3124</td>
+        <td>2750</td>
+        <td>3124</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/2750/3124" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/2750/3124" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627673537871920</td>
+        <td>208.57957</td>
+        <td>-4.62913</td>
+        <td>2.1753</td>
+        <td>0.970</td>
+        <td>-1.61</td>
+        <td>5808</td>
+        <td>2033</td>
+        <td>5808</td>
+        <td>2033</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/5808/2033" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/5808/2033" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627824050474952</td>
+        <td>183.96004</td>
+        <td>1.46234</td>
+        <td>2.1779</td>
+        <td>1.000</td>
+        <td>-1.26</td>
+        <td>55</td>
+        <td>3466</td>
+        <td>55</td>
+        <td>3466</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/55/3466" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/55/3466" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627871420941040</td>
+        <td>127.96053</td>
+        <td>3.60071</td>
+        <td>2.2023</td>
+        <td>1.000</td>
+        <td>-0.20</td>
+        <td>7107</td>
+        <td>3266</td>
+        <td>7107</td>
+        <td>3266</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/7107/3266" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/7107/3266" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39628206742962752</td>
+        <td>327.06090</td>
+        <td>17.45440</td>
+        <td>2.2215</td>
+        <td>0.997</td>
+        <td>—</td>
+        <td>1078</td>
+        <td>3615</td>
+        <td>1078</td>
+        <td>3615</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/1078/3615" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/1078/3615" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627897043945632</td>
+        <td>217.71017</td>
+        <td>4.59230</td>
+        <td>2.2413</td>
+        <td>1.000</td>
+        <td>—</td>
+        <td>10496</td>
+        <td>4693</td>
+        <td>10496</td>
+        <td>4693</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/10496/4693" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/10496/4693" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627468235083088</td>
+        <td>59.12242</td>
+        <td>-13.29731</td>
+        <td>2.2557</td>
+        <td>0.991</td>
+        <td>2.06</td>
+        <td>8698</td>
+        <td>4425</td>
+        <td>8698</td>
+        <td>4425</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/8698/4425" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/8698/4425" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627897442406752</td>
+        <td>241.64705</td>
+        <td>4.62251</td>
+        <td>2.2703</td>
+        <td>1.000</td>
+        <td>-1.26</td>
+        <td>9030</td>
+        <td>4210</td>
+        <td>9030</td>
+        <td>4210</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/9030/4210" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/9030/4210" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39628289781794120</td>
+        <td>167.21316</td>
+        <td>21.29321</td>
+        <td>2.2709</td>
+        <td>1.000</td>
+        <td>-1.37</td>
+        <td>10738</td>
+        <td>2747</td>
+        <td>10738</td>
+        <td>2747</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/10738/2747" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/10738/2747" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627694916241664</td>
+        <td>45.40469</td>
+        <td>-3.71993</td>
+        <td>2.2709</td>
+        <td>0.785</td>
+        <td>-1.15</td>
+        <td>11058</td>
+        <td>3724</td>
+        <td>11058</td>
+        <td>3724</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/11058/3724" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/11058/3724" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627932473230640</td>
+        <td>176.54452</td>
+        <td>5.94214</td>
+        <td>2.2789</td>
+        <td>0.527</td>
+        <td>—</td>
+        <td>4582</td>
+        <td>1023</td>
+        <td>4582</td>
+        <td>1023</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/4582/1023" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/4582/1023" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39628495508212104</td>
+        <td>118.84482</td>
+        <td>30.74607</td>
+        <td>2.2841</td>
+        <td>1.000</td>
+        <td>-1.45</td>
+        <td>11358</td>
+        <td>2640</td>
+        <td>11358</td>
+        <td>2640</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/11358/2640" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/11358/2640" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627824247603968</td>
+        <td>195.53447</td>
+        <td>1.60429</td>
+        <td>2.3507</td>
+        <td>1.000</td>
+        <td>—</td>
+        <td>5246</td>
+        <td>2201</td>
+        <td>5246</td>
+        <td>2201</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/5246/2201" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/5246/2201" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39633095242025744</td>
+        <td>174.30453</td>
+        <td>40.88936</td>
+        <td>2.4127</td>
+        <td>0.681</td>
+        <td>-0.82</td>
+        <td>9443</td>
+        <td>2770</td>
+        <td>9443</td>
+        <td>2770</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/9443/2770" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/9443/2770" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627769507744600</td>
+        <td>172.89407</td>
+        <td>-0.80689</td>
+        <td>2.4279</td>
+        <td>0.998</td>
+        <td>—</td>
+        <td>1273</td>
+        <td>3009</td>
+        <td>1273</td>
+        <td>3009</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/1273/3009" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/1273/3009" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627812419667552</td>
+        <td>210.58040</td>
+        <td>1.10065</td>
+        <td>2.4859</td>
+        <td>0.997</td>
+        <td>—</td>
+        <td>8922</td>
+        <td>2121</td>
+        <td>8922</td>
+        <td>2121</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/8922/2121" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/8922/2121" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39628195137326792</td>
+        <td>323.84699</td>
+        <td>17.04017</td>
+        <td>2.4998</td>
+        <td>1.000</td>
+        <td>2.65</td>
+        <td>1078</td>
+        <td>1630</td>
+        <td>1078</td>
+        <td>1630</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/1078/1630" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/1078/1630" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627932942993832</td>
+        <td>204.71716</td>
+        <td>5.93484</td>
+        <td>2.5585</td>
+        <td>1.000</td>
+        <td>-1.42</td>
+        <td>1118</td>
+        <td>2272</td>
+        <td>1118</td>
+        <td>2272</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/1118/2272" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/1118/2272" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39628301035113000</td>
+        <td>166.99620</td>
+        <td>21.68631</td>
+        <td>2.6179</td>
+        <td>1.000</td>
+        <td>6.75</td>
+        <td>10738</td>
+        <td>2793</td>
+        <td>10738</td>
+        <td>2793</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/10738/2793" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/10738/2793" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39633117232762784</td>
+        <td>121.43709</td>
+        <td>42.21711</td>
+        <td>2.6198</td>
+        <td>1.000</td>
+        <td>—</td>
+        <td>6683</td>
+        <td>4905</td>
+        <td>6683</td>
+        <td>4905</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/6683/4905" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/6683/4905" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627757432341024</td>
+        <td>173.02618</td>
+        <td>-1.33656</td>
+        <td>2.6832</td>
+        <td>0.655</td>
+        <td>0.33</td>
+        <td>10849</td>
+        <td>4060</td>
+        <td>10849</td>
+        <td>4060</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/10849/4060" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/10849/4060" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627733923267728</td>
+        <td>211.80748</td>
+        <td>-2.25628</td>
+        <td>2.8032</td>
+        <td>0.999</td>
+        <td>-1.41</td>
+        <td>10492</td>
+        <td>3024</td>
+        <td>10492</td>
+        <td>3024</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/10492/3024" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/10492/3024" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39628210991794872</td>
+        <td>232.55590</td>
+        <td>17.66492</td>
+        <td>2.8184</td>
+        <td>1.000</td>
+        <td>—</td>
+        <td>2771</td>
+        <td>4399</td>
+        <td>2771</td>
+        <td>4399</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/2771/4399" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/2771/4399" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39633082617168088</td>
+        <td>264.94481</td>
+        <td>40.17170</td>
+        <td>2.8573</td>
+        <td>0.994</td>
+        <td>—</td>
+        <td>1899</td>
+        <td>670</td>
+        <td>1899</td>
+        <td>670</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/1899/670" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/1899/670" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627743289147912</td>
+        <td>50.03068</td>
+        <td>-1.69092</td>
+        <td>2.9417</td>
+        <td>1.000</td>
+        <td>—</td>
+        <td>4816</td>
+        <td>3452</td>
+        <td>4816</td>
+        <td>3452</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/4816/3452" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/4816/3452" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627749324754928</td>
+        <td>49.96783</td>
+        <td>-1.58480</td>
+        <td>3.0030</td>
+        <td>1.000</td>
+        <td>-1.81</td>
+        <td>4816</td>
+        <td>3055</td>
+        <td>4816</td>
+        <td>3055</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/4816/3055" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/4816/3055" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39632971883349728</td>
+        <td>251.19916</td>
+        <td>34.53701</td>
+        <td>3.1198</td>
+        <td>0.790</td>
+        <td>1.49</td>
+        <td>387</td>
+        <td>1884</td>
+        <td>387</td>
+        <td>1884</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/387/1884" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/387/1884" target="_blank">Matterhorn</a></td>
+      </tr>
+      <tr>
+        <td>39627817930986080</td>
+        <td>179.24947</td>
+        <td>1.16478</td>
+        <td>3.1297</td>
+        <td>1.000</td>
+        <td>-0.49</td>
+        <td>30</td>
+        <td>2216</td>
+        <td>30</td>
+        <td>2216</td>
+        <td><a href="https://inspector.desi.lbl.gov/loa/spectra/tiles/30/2216" target="_blank">Loa</a></td>
+        <td><a href="https://inspector.desi.lbl.gov/matterhorn/spectra/tiles/30/2216" target="_blank">Matterhorn</a></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
