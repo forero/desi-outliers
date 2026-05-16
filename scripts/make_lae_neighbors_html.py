@@ -2,11 +2,14 @@
 For each LAE target found in the Loa or Matterhorn UMAP batches, show the
 LAE spectrum and its 10 closest UMAP neighbours within the same HDBSCAN cluster
 (or within the full batch when no cluster labels are available).
+Neighbours classified as STAR in the zcatalog are excluded.
 
 Inputs:
   DR1_LAE_submitted_version.fits          -- LAE catalog (19,685 targets)
   Loa UMAP batches + cluster_labels_loa_{tag}.npy  (all 11 batches labelled)
   Matterhorn UMAP batches; cluster_labels.npy only for batch 0001
+  Loa zcatalog    -- SPECTYPE per TARGETID
+  Matterhorn zcatalog -- SPECTYPE_BEST per TARGETID
 
 Outputs:
   html/lae_neighbors_loa.html
@@ -22,16 +25,21 @@ LAE_FILE  = "DR1_LAE_submitted_version.fits"
 CFS_DIR   = pathlib.Path("/global/cfs/cdirs/desi/users/forero/outliers")
 N_NEIGH   = 10
 
+LOA_ZCAT = "/global/cfs/cdirs/desi/spectro/redux/loa/zcatalog/v1/zall-tilecumulative-loa.fits"
+MTH_ZCAT = "/global/cfs/cdirs/desi/spectro/redux/matterhorn/zcatalog/v2/zall/zall-tilecumulative-matterhorn.fits"
+
 PRODUCTIONS = {
     "loa": {
-        "batch_dir":    pathlib.Path("/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/outlier_umap_batches"),
-        "label_pattern": "data/cluster_labels_loa_{tag}.npy",
-        "out_html":     "html/lae_neighbors_loa.html",
+        "batch_dir": pathlib.Path("/pscratch/sd/v/vtorresg/umap_analysis/data/loa/sum/outlier_umap_batches"),
+        "out_html":  "html/lae_neighbors_loa.html",
+        "zcat":      LOA_ZCAT,
+        "spectype_col": "SPECTYPE",
     },
     "matterhorn": {
-        "batch_dir":    pathlib.Path("/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/outlier_umap_batches"),
-        "label_pattern": None,   # handled per-batch below
-        "out_html":     "html/lae_neighbors_matterhorn.html",
+        "batch_dir": pathlib.Path("/pscratch/sd/v/vtorresg/umap_analysis/data/matterhorn/sum/outlier_umap_batches"),
+        "out_html":  "html/lae_neighbors_matterhorn.html",
+        "zcat":      MTH_ZCAT,
+        "spectype_col": "SPECTYPE_BEST",
     },
 }
 
@@ -43,16 +51,29 @@ pathlib.Path("html").mkdir(exist_ok=True)
 CFS_DIR.mkdir(parents=True, exist_ok=True)
 
 # ── load LAE catalog ──────────────────────────────────────────────────────────
-lae_raw = fitsio.read(LAE_FILE, ext="INFO")
-lae_ids = set(lae_raw["TARGETID"].astype(int))
+lae_raw  = fitsio.read(LAE_FILE, ext="INFO")
+lae_ids  = set(lae_raw["TARGETID"].astype(int))
 lae_zlya = {int(r["TARGETID"]): float(r["Z_LYA"]) for r in lae_raw}
 lae_prob = {int(r["TARGETID"]): float(r["PROB"]) for r in lae_raw}
 print(f"LAE targets: {len(lae_ids)}")
 
 
+def load_star_array(zcat_path, spectype_col):
+    """Return numpy array of TARGETIDs classified as STAR (primary observations only)."""
+    print(f"  Loading zcatalog: {zcat_path}")
+    data = fitsio.read(zcat_path, ext=1, columns=["TARGETID", spectype_col, "ZCAT_PRIMARY"])
+    primary = data["ZCAT_PRIMARY"].astype(bool)
+    spectype = np.char.strip(data[spectype_col][primary].astype("U10"))
+    tids = data["TARGETID"][primary].astype(int)
+    stars = tids[spectype == "STAR"]
+    print(f"  STAR targets in zcatalog: {len(stars):,}")
+    return stars
+
+
 def build_html(specprod, cfg):
-    batch_dir = cfg["batch_dir"]
-    base_url  = f"https://inspector.desi.lbl.gov/{specprod}/spectra"
+    batch_dir    = cfg["batch_dir"]
+    base_url     = f"https://inspector.desi.lbl.gov/{specprod}/spectra"
+    star_arr     = load_star_array(cfg["zcat"], cfg["spectype_col"])
 
     matches  = []
     sections = []
@@ -65,8 +86,8 @@ def build_html(specprod, cfg):
             print(f"  skipping {npz_path.name} (permission denied)")
             continue
 
-        tids   = f["targetids"].astype(int)
-        emb    = f["embedding"]
+        tids    = f["targetids"].astype(int)
+        emb     = f["embedding"]
         tileids = f["tileids"].astype(int)
         fibers  = f["fibers"].astype(int)
         nights  = f["nights"].astype(int)
@@ -78,11 +99,14 @@ def build_html(specprod, cfg):
             label_path = MATTERHORN_LABELS.get(tag)
 
         if label_path and pathlib.Path(label_path).exists():
-            labels = np.load(label_path)
+            labels     = np.load(label_path)
             has_labels = True
         else:
-            labels = None
+            labels     = None
             has_labels = False
+
+        # per-batch star mask — computed once, reused for every LAE in this batch
+        is_star = np.isin(tids, star_arr)
 
         found_in_batch = [(i, tid) for i, tid in enumerate(tids) if tid in lae_ids]
         if not found_in_batch:
@@ -94,20 +118,19 @@ def build_html(specprod, cfg):
 
             if has_labels:
                 cluster = int(labels[idx])
-                if cluster == -1:
-                    pool = np.where(labels == -1)[0]
-                else:
-                    pool = np.where(labels == cluster)[0]
+                pool = np.where(labels == cluster)[0] if cluster != -1 else np.where(labels == -1)[0]
                 cluster_label = str(cluster)
             else:
                 pool = np.arange(len(tids))
                 cluster_label = "n/a"
 
-            pool = pool[pool != idx]   # exclude the LAE itself
+            # exclude the LAE itself and stars (using pre-computed batch mask)
+            pool = pool[(pool != idx) & ~is_star[pool]]
+
             dists = np.linalg.norm(emb[pool] - lae_xy, axis=1)
             top_n = pool[np.argsort(dists)[:N_NEIGH]]
 
-            neigh_tids   = [int(tids[j])   for j in top_n]
+            neigh_tids   = [int(tids[j])    for j in top_n]
             neigh_tiles  = [int(tileids[j]) for j in top_n]
             neigh_fibers = [int(fibers[j])  for j in top_n]
             neigh_nights = [int(nights[j])  for j in top_n]
@@ -162,7 +185,7 @@ def build_html(specprod, cfg):
     </p>
     <table>
       <thead>
-        <tr><th colspan="6">{N_NEIGH} closest UMAP neighbours ({cluster_note})</th></tr>
+        <tr><th colspan="6">{N_NEIGH} closest UMAP neighbours, stars excluded ({cluster_note})</th></tr>
         <tr>
           <th>TARGETID</th><th>TILEID</th><th>FIBER</th>
           <th>NIGHT</th><th>UMAP dist</th><th>Inspector</th>
@@ -177,12 +200,10 @@ def build_html(specprod, cfg):
         print(f"  No LAE matches found in {specprod}.")
         return
 
-    # save CSV
     csv_path = f"data/lae_neighbors_{specprod}.csv"
     pd.DataFrame(matches).to_csv(csv_path, index=False)
     print(f"Saved {len(matches)} matches to {csv_path}")
 
-    # sort sections by Z_LYA
     order = np.argsort([m["Z_LYA"] for m in matches])
     sections_html = "\n".join(sections[i] for i in order)
 
@@ -212,7 +233,8 @@ def build_html(specprod, cfg):
     {len(matches)} LAE targets from <em>DR1_LAE_submitted_version.fits</em>
     found in the {specprod} UMAP batches. For each: the {N_NEIGH} closest
     spectra in UMAP space within the same HDBSCAN cluster (or full batch when
-    no labels are available). Sorted by Z_LYA.
+    no labels are available), with stars excluded using the {specprod} zcatalog.
+    Sorted by Z_LYA.
   </p>
 {sections_html}
 </body>

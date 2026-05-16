@@ -57,6 +57,14 @@ desi-outliers/
 └── html/        # HTML reports and tables
 ```
 
+## Zcatalog (Matterhorn)
+
+```
+/global/cfs/cdirs/desi/spectro/redux/matterhorn/zcatalog/v2/zall/zall-tilecumulative-matterhorn.fits
+```
+
+Key columns: `TARGETID`, `TILEID`, `SURVEY`, `PROGRAM`, `Z_BEST`, `ZWARN_BEST`, `SPECTYPE_BEST`, `ZCAT_PRIMARY`.
+
 ## Zcatalog (Loa)
 
 Per-spectrum redshift catalog with TSNR2 metrics:
@@ -177,8 +185,8 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 - `html/lae_outliers_loa_matterhorn.html` — 34 LAEs that are UMAP outliers in both Loa and Matterhorn; sortable table with inspector links for both productions
 - `html/lae_outliers_loa_only.html` — 195 LAEs that are outliers in Loa only; groups of 20 with per-group inspector links
 - `html/lae_outliers_matterhorn_only.html` — 264 LAEs that are outliers in Matterhorn only; groups of 20 with per-group inspector links
-- `html/lae_neighbors_loa.html` — 230 LAE occurrences in Loa batches; for each: 10 closest UMAP neighbours within the same HDBSCAN cluster; sorted by Z_LYA
-- `html/lae_neighbors_matterhorn.html` — 298 LAE occurrences in Matterhorn batches; neighbours from same cluster (batch 0001) or full batch (batches 0002–0022)
+- `html/lae_neighbors_loa.html` — 230 LAE occurrences in Loa batches; for each: 10 closest UMAP neighbours within the same HDBSCAN cluster, stars excluded; sorted by Z_LYA
+- `html/lae_neighbors_matterhorn.html` — 298 LAE occurrences in Matterhorn batches; neighbours from same cluster (batch 0001) or full batch (batches 0002–0022), stars excluded
 
 ## Scripts
 
@@ -200,7 +208,7 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 ### LAE cross-match
 - `scripts/make_lae_outliers_html.py` — generates `lae_outliers_loa_matterhorn.html`; 34 LAEs in both productions; inputs: `DR1_LAE_submitted_version.fits` + both outlier CSVs
 - `scripts/make_lae_groups_html.py` — generates `lae_outliers_loa_only.html` (195) and `lae_outliers_matterhorn_only.html` (264); groups of 20 with inspector links
-- `scripts/make_lae_neighbors_html.py` — generates `lae_neighbors_loa.html` and `lae_neighbors_matterhorn.html`; 10 closest UMAP neighbours per LAE found in each batch
+- `scripts/make_lae_neighbors_html.py` — generates `lae_neighbors_loa.html` and `lae_neighbors_matterhorn.html`; 10 closest UMAP neighbours per LAE found in each batch, with stars excluded using zcatalog `SPECTYPE` (Loa) / `SPECTYPE_BEST` (Matterhorn); star mask computed once per batch via `np.isin` for speed
 
 ### HTML reports
 - `scripts/make_dark_common_outliers_html.py` — generates `dark_common_outliers_loa_matterhorn.html`
