@@ -188,6 +188,43 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 - `html/lae_neighbors_loa.html` — 230 LAE occurrences in Loa batches; for each: 10 closest UMAP neighbours within the same HDBSCAN cluster, stars excluded; sorted by Z_LYA
 - `html/lae_neighbors_matterhorn.html` — 298 LAE occurrences in Matterhorn batches; neighbours from same cluster (batch 0001) or full batch (batches 0002–0022), stars excluded
 
+## Tile observing conditions (Loa)
+
+Per-tile average observing conditions derived from `exposures-loa.fits`:
+
+```
+data/tile_conditions_loa.csv   (14,179 tiles, all surveys)
+```
+
+| Column | Description |
+|--------|-------------|
+| `TILEID`, `SURVEY`, `PROGRAM`, `FAPRGRM` | Tile metadata |
+| `NEXP` | Number of exposures averaged over |
+| `EXPTIME_TOTAL` | Total exposure time (s) |
+| `AIRMASS_MEAN` | Mean airmass |
+| `SEEING_ETC_MEAN`, `SEEING_GFA_MEAN` | Mean seeing (arcsec) |
+| `TRANSPARENCY_GFA_MEAN` | Mean atmospheric transparency |
+| `SKY_MAG_AB_GFA_MEAN` | Mean sky surface brightness (AB mag/arcsec², GFA) |
+| `SKY_MAG_G_SPEC_MEAN`, `SKY_MAG_R_SPEC_MEAN`, `SKY_MAG_Z_SPEC_MEAN` | Mean sky mag per band (spectrograph) |
+| `EBV_MEAN` | Mean E(B-V) galactic dust |
+
+Source: `/global/cfs/cdirs/desi/spectro/redux/loa/exposures-loa.fits` (EXPOSURES HDU).
+Moon separation is not stored in pipeline outputs; compute from `MJD` + `TILERA/TILEDEC` via `astropy.coordinates.get_body('moon', ...)`.
+
+## Observing conditions vs outlier fraction (Loa, main survey)
+
+Spearman correlations between per-tile outlier fraction and all condition columns, with ±1σ from 10-group random split:
+
+```
+data/conditions_correlations_loa.csv   (Pearson + Spearman r and p per condition × program)
+```
+
+**Key findings (main survey only)**:
+- **Backup**: strongest signals — `NEXP` (r=+0.62±0.07) and `EXPTIME_TOTAL` (r=+0.56±0.07) dominate; selection effect: backup tiles re-observed in poor conditions. `E(B-V)` also significant (r=+0.32±0.10).
+- **Dark**: sky brightness is the main driver — `SKY_MAG_AB_GFA` (r=−0.16±0.04), `SKY_MAG_R_SPEC` (r=−0.15±0.04), `SKY_MAG_Z_SPEC` (r=−0.15±0.04); brighter sky → more outliers. `E(B-V)` anti-correlates (r=−0.10±0.03).
+- **Bright**: weak signals throughout; `EXPTIME_TOTAL` (r=+0.16±0.04) and `SKY_MAG_Z_SPEC` (r=−0.10±0.02) are the only robust detections.
+- **Seeing is uncorrelated** with outlier fraction in dark and bright programs.
+
 ## Scripts
 
 ### Distribution plots
@@ -221,6 +258,13 @@ All HTML files are saved to `html/` and automatically copied to `/global/cfs/cdi
 ### Clustering
 - `scripts/dbscan_umap_batch.py` — runs HDBSCAN on a UMAP NPZ batch; saves `data/cluster_labels.npy` and `data/cluster_representatives.csv`; produces `plots/dbscan_umap_batch.png`
 - `scripts/process_loa_batches.py` — runs HDBSCAN on all 11 Loa UMAP batches; saves per-batch labels/reps/PNG/HTML; skips batches with permission errors; copies HTML+PNG to CFS and `html/img/`
+
+### Observing conditions
+- `scripts/make_tile_conditions_loa.py` — builds `data/tile_conditions_loa.csv`; averages per-exposure conditions from `exposures-loa.fits` per tile (NEXP, EXPTIME_TOTAL, airmass, seeing, transparency, sky mags, EBV)
+- `scripts/plot_sky_vs_outlier_fraction_loa.py` — scatter + running median of outlier fraction vs `SKY_MAG_AB_GFA_MEAN`; 3-panel (dark/bright/backup); saves `plots/sky_vs_outlier_fraction_loa.png`
+- `scripts/correlate_conditions_outlier_fraction_loa.py` — Pearson + Spearman r for all condition columns vs outlier fraction per program; saves `data/conditions_correlations_loa.csv` + heatmap `plots/conditions_correlations_loa.png`
+- `scripts/plot_conditions_matrix_loa.py` — clean summary matrix of Spearman r; red = Bonferroni-significant; saves `plots/conditions_matrix_loa.png`
+- `scripts/plot_conditions_matrix_bootstrap_loa.py` — same matrix with ±1σ from 10-group random split; significance criterion: |r̄| > 2σ and |r̄| ≥ 0.05; saves `plots/conditions_matrix_bootstrap_loa.png`
 
 ### VI and redshift quality
 - `scripts/vi_analysis_loa.py` — Clopper-Pearson VI fractions (bad/good/zwarn) per tile and aggregated, plus full-catalog ZWARN≠0 fractions from zcatalog cross-match
